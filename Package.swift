@@ -9,8 +9,8 @@ let package = Package(
         .plugin(name: "FramedScreenshotsTool", targets: ["FramedScreenshotsTool"]),
     ],
     dependencies: [
-        //.package(url: "https://github.com/ChargePoint/xcparse.git", branch: "master"),
-        //.package(url: "https://github.com/lake-of-fire/ShotPlan.git", branch: "main"),
+        .package(url: "https://github.com/lake-of-fire/ShotPlan.git", branch: "main"),
+        .package(url: "https://github.com/lake-of-fire/FrameKit.git", branch: "main"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -23,6 +23,8 @@ let package = Package(
                     ]
                 ),
                 dependencies: [
+                    .product(name: "shotplan", package: "ShotPlan"),
+                    .product(name: "FrameKit", package: "framekit"),
                 ]),
     ]
 )
