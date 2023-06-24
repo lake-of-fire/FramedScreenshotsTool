@@ -9,7 +9,7 @@ let package = Package(
         .macOS(.v13)
     ],
     products: [
-        //        .library(name: "FrameKit", targets: ["FrameKit"]),
+        .library(name: "FrameKit", targets: ["FrameKit"]),
         .executable(name: "FramedScreenshotsCLI", targets: ["FramedScreenshotsCLI"]),
         .plugin(name: "FramedScreenshotsTool", targets: ["FramedScreenshotsTool"]),
     ],
@@ -19,11 +19,26 @@ let package = Package(
         .package(url: "https://github.com/lake-of-fire/ShotPlan.git", branch: "main"),
     ],
     targets: [
+        .target(
+            name: "FrameKit",
+            dependencies: [],
+            resources: [
+                .copy("Resources/Frames"),
+            ]
+        ),
+        .target(
+            name: "FrameKitLayout",
+            dependencies: [
+                .target(name: "FrameKit"),
+            ]
+        ),
         .executableTarget(
             name: "FramedScreenshotsCLI",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "shotplan", package: "ShotPlan"),
+                .target(name: "FrameKit"),
+                .target(name: "FrameKitLayout"),
             ]),
         .plugin(
             name: "FramedScreenshotsTool",
@@ -34,8 +49,8 @@ let package = Package(
                 ]
             ),
             dependencies: [
+                .product(name: "shotplan", package: "ShotPlan"),
                 "FramedScreenshotsCLI",
-//                .product(name: "FramedScreenshotsCLI"),
             ]),
     ]
 )

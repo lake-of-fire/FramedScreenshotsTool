@@ -1,6 +1,8 @@
 import SwiftUI
 import ArgumentParser
 import shotplan
+import FrameKit
+import FrameKitLayout
 
 @main
 struct FramedScreenshotsCLI: ParsableCommand {
@@ -20,23 +22,14 @@ extension FramedScreenshotsCLI {
         mutating func run() {
             let configurationFromFile = try? ShotPlan.Configuration.load()
             let devices = configurationFromFile?.devices ?? ShotPlan.Configuration.defaultDevices
-            let targetFolder = Project.targetDirectoryURL.relativePath
             
             do {
                 for device in devices {
                     let screenshotsURL = Project.targetDirectoryURL.appending(path: device.description, directoryHint: .isDirectory).appending(path: device.simulatorName, directoryHint: .isDirectory)
-                    //                let framedURL = targetFolder.deletingLastPathComponent().appendingPathComponent("FramedScreenshots", isDirectory: true)
-                    //                let outputPath = Project.currentDirectoryURL.appendingPathComponent("Screenshots", isDirectory: true)
                     let screens = [
                         FrameScreen(keyword: "", title: "", backgroundImage: nil)
                     ]
                     try generateFinalScreens(forDevice: device, screens: screens, screenshots: screenshotsURL, output: screenshotsURL)
-                    
-                    //                print("Creating Framed Screenshots Directory …")
-                    //                let _ = try? Shell.call("mkdir -p \(screenshotsPath.quoted())")
-                    
-                    //                print("Copying Screenshots …")
-                    //                let _ = try? Shell.call("find \"\(derivedDataPath)/Logs/Test\" -maxdepth 1 -type d -exec xcparse screenshots {} \(screenshotsPath.quoted()) \\;")
                 }
             } catch {
                 fatalError(error.localizedDescription)
