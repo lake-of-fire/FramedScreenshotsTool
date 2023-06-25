@@ -1,8 +1,9 @@
+#if os(macOS)
 import SwiftUI
 import FrameKit
 
 public enum FrameLayoutOption: String, RawRepresentable, LayoutProviderOption {
-//    case iPhone14Plus = "iPhone 14 Plus"
+    case iPhone14Plus = "iPhone 14 Plus"
     case iPhone14ProMax = "iPhone 14 Pro Max"
     case iPhone8Plus = "iPhone 8 Plus"
     case iPadPro129Inch6thGeneration = "iPad Pro (12.9-inch) (6th generation)"
@@ -14,7 +15,7 @@ public enum FrameLayoutOption: String, RawRepresentable, LayoutProviderOption {
 
     public var value: FrameLayout {
         switch self {
-//        case .iPhone14Plus: return .iPhone14Plus
+        case .iPhone14Plus: return .iPhone14Plus
         case .iPhone14ProMax: return .iPhone14ProMax
         case .iPhone8Plus: return .iPhone8Plus
         case .iPadPro129Inch6thGeneration: return .iPadPro129Inch6thGeneration
@@ -76,6 +77,18 @@ public struct FrameLayout: LayoutProvider {
 extension FrameLayout {
     public static let defaultBackgroundColor = Color(red: 255 / 255, green: 153 / 255, blue: 51 / 255)
 
+    public static let iPhone14Plus = Self(
+        size: CGSize(width: 1284, height: 2778),
+        deviceFrameOffset: .zero,
+        textInsets: EdgeInsets(top: 36, leading: 96, bottom: 0, trailing: 96),
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: -500, trailing: 84),
+        keywordFontSize: 148,
+        titleFontSize: 72,
+        textGap: 24,
+        textColor: .white,
+        backgroundColor: defaultBackgroundColor
+    )
+    
     public static let iPhone14ProMax = Self(
         size: CGSize(width: 1290, height: 2796),
         deviceFrameOffset: .zero,
@@ -302,3 +315,4 @@ public struct SampleHeroStoreScreenshotView: StoreScreenshotView {
         }
     }
 }
+#endif

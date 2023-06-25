@@ -10,20 +10,19 @@ let package = Package(
     ],
     products: [
         .library(name: "FrameKit", targets: ["FrameKit"]),
-        .executable(name: "FramedScreenshotsCLI", targets: ["FramedScreenshotsCLI"]),
-        .plugin(name: "FramedScreenshotsTool", targets: ["FramedScreenshotsTool"]),
+        .library(name: "ShotPlan", targets: ["ShotPlan"]),
+        .executable(name: "ShotPlanCLI", targets: ["ShotPlanCLI"]),
+        .library(name: "FramedScreenshotsCLI", targets: ["FramedScreenshotsCLI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.2.2")),
-        //        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
-        .package(url: "https://github.com/lake-of-fire/ShotPlan.git", branch: "main"),
     ],
     targets: [
         .target(
             name: "FrameKit",
             dependencies: [],
             resources: [
-                .copy("Resources/Frames"),
+                .copy("Resources"),
             ]
         ),
         .target(
@@ -32,25 +31,27 @@ let package = Package(
                 .target(name: "FrameKit"),
             ]
         ),
+        .target(
+            name: "ShotPlan",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]
+        ),
         .executableTarget(
+            name: "ShotPlanCLI",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .target(name: "ShotPlan"),
+            ]),
+        .target(
             name: "FramedScreenshotsCLI",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .product(name: "shotplan", package: "ShotPlan"),
+//                .product(name: "ShotPlan", package: "ShotPlan"),
+                "ShotPlan",
+//                .product(name: "shotplan", package: "ShotPlan"),
                 .target(name: "FrameKit"),
                 .target(name: "FrameKitLayout"),
-            ]),
-        .plugin(
-            name: "FramedScreenshotsTool",
-            capability: .command(
-                intent: .custom(verb: "generate-framed-screenshots", description: "Generate framed screenshots."),
-                permissions: [
-                    .writeToPackageDirectory(reason: "Takes and frames screenshots.")
-                ]
-            ),
-            dependencies: [
-                .product(name: "shotplan", package: "ShotPlan"),
-                "FramedScreenshotsCLI",
             ]),
     ]
 )

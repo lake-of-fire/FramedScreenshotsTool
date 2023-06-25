@@ -32,7 +32,7 @@ public struct StoreScreenshotRenderer {
         guard let data = convertToImage(view: view, format: imageFormat) else {
             throw Error.imageOperationFailure("Error: can't generate image from view")
         }
-
+        
         let result = FileManager.default.createFile(atPath: outputPath, contents: data, attributes: nil)
         guard result else {
             throw Error.fileSavingFailure("Error: can't save generated image at \(String(describing: outputPath))")
