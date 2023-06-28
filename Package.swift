@@ -5,14 +5,12 @@ import PackageDescription
 
 let package = Package(
     name: "FramedScreenshotsTool",
-    platforms: [
-        .macOS(.v13)
-    ],
+    platforms: [.macOS(.v13)],
     products: [
         .library(name: "FrameKit", targets: ["FrameKit"]),
         .library(name: "ShotPlan", targets: ["ShotPlan"]),
         .executable(name: "ShotPlanCLI", targets: ["ShotPlanCLI"]),
-        .library(name: "FramedScreenshotsCLI", targets: ["FramedScreenshotsCLI"]),
+        .library(name: "FramedScreenshots", targets: ["FramedScreenshots"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.2.2")),
@@ -22,7 +20,8 @@ let package = Package(
             name: "FrameKit",
             dependencies: [],
             resources: [
-                .copy("Resources"),
+//                .copy("Resources/Frames"),
+                .process("Resources"),
             ]
         ),
         .target(
@@ -37,14 +36,8 @@ let package = Package(
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
-        .executableTarget(
-            name: "ShotPlanCLI",
-            dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .target(name: "ShotPlan"),
-            ]),
         .target(
-            name: "FramedScreenshotsCLI",
+            name: "FramedScreenshots",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
 //                .product(name: "ShotPlan", package: "ShotPlan"),
@@ -52,6 +45,12 @@ let package = Package(
 //                .product(name: "shotplan", package: "ShotPlan"),
                 .target(name: "FrameKit"),
                 .target(name: "FrameKitLayout"),
+            ]),
+        .executableTarget(
+            name: "ShotPlanCLI",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .target(name: "ShotPlan"),
             ]),
     ]
 )

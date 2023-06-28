@@ -19,8 +19,16 @@ public struct DeviceFrame {
             throw Error.fileNotFound("screenshot was not found at \(screenshot)")
         }
 
+        let deviceName = deviceName + ".png"
         guard let deviceFrameImage = Bundle.module.image(forResource: deviceName) else {
-            throw Error.fileNotFound("device frame was not found for name \(deviceName)")
+            let fm = FileManager.default
+            let path = Bundle.module.resourcePath!
+            let items = try! fm.contentsOfDirectory(atPath: path)
+            var s = ""
+            for item in items {
+                s += " // " + item
+            }
+            throw Error.fileNotFound("device frame was not found for name \(deviceName) from choices: \(s)")
         }
 
         // Device frame's image needs to be generted separaratedly to make framing logic easy

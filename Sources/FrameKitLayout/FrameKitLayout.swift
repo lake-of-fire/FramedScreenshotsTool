@@ -3,11 +3,11 @@ import SwiftUI
 import FrameKit
 
 public enum FrameLayoutOption: String, RawRepresentable, LayoutProviderOption {
-    case iPhone14Plus = "iPhone 14 Plus"
-    case iPhone14ProMax = "iPhone 14 Pro Max"
-    case iPhone8Plus = "iPhone 8 Plus"
-    case iPadPro129Inch6thGeneration = "iPad Pro (12.9-inch) (6th generation)"
-    case iPadPro129Inch2ndGeneration = "iPad Pro (12.9-inch) (2nd generation)"
+    case iPhone14Plus = "iPhone 14 Plus Midnight"
+    case iPhone14ProMax = "iPhone 14 Pro Max Black"
+    case iPhone8Plus = "iPhone 8 Plus Space Gray"
+    case iPadPro129Inch6thGeneration = "iPad Pro (12.9-inch) (6th generation) Space Gray"
+    case iPadPro129Inch2ndGeneration = "iPad Pro (12.9-inch) (2nd generation) Space Gray"
 
     public init?(argument: String) {
         self.init(rawValue: argument)
@@ -29,9 +29,19 @@ public struct FrameContent {
     public let keyword: String
     public let title: String
     public let backgroundImage: NSImage?
-    public let framedScreenshots: [NSImage]
+    public let framedScreenshots: [FramedScreenshot]
 
-    public init(locale: Locale, keyword: String, title: String, backgroundImage: NSImage? = nil, framedScreenshots: [NSImage]) {
+    public struct FramedScreenshot: Identifiable {
+        public let id: URL
+        public let image: NSImage
+        
+        public init(id: URL, image: NSImage) {
+            self.id = id
+            self.image = image
+        }
+    }
+    
+    public init(locale: Locale, keyword: String, title: String, backgroundImage: NSImage? = nil, framedScreenshots: [FramedScreenshot]) {
         self.locale = locale
         self.keyword = keyword
         self.title = title
@@ -219,15 +229,15 @@ public struct SampleStoreScreenshotView: StoreScreenshotView {
 //            }
 
             // Image
-//            ForEach(content.framedScreenshots) { framedScreenshot in
-//                HStack(alignment: .bottom) {
-//                    Image(nsImage: content.framedScreenshot)
-//                        .resizable()
-//                        .aspectRatio(contentMode: .fit)
-//                }
-//                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-//                .padding(layout.imageInsets)
-//            }
+            ForEach(content.framedScreenshots, id: \.id) { framedScreenshot in
+                HStack(alignment: .bottom) {
+                    Image(nsImage: framedScreenshot.image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                .padding(layout.imageInsets)
+            }
 
             // Text
             HStack(alignment: .top) {
@@ -280,20 +290,20 @@ public struct SampleHeroStoreScreenshotView: StoreScreenshotView {
             GeometryReader() { geometry in
                 ZStack {
                     HStack(alignment: .center, spacing: 10) {
-                        Image(nsImage: content.framedScreenshots[1])
+                        Image(nsImage: content.framedScreenshots[1].image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: geometry.size.width / 2.6)
 
                         Spacer()
 
-                        Image(nsImage: content.framedScreenshots[2])
+                        Image(nsImage: content.framedScreenshots[2].image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: geometry.size.width / 2.6)
                     }
 
-                    Image(nsImage: content.framedScreenshots[0])
+                    Image(nsImage: content.framedScreenshots[0].image)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: geometry.size.width / 2.2, alignment: .center)
