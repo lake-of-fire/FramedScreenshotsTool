@@ -6,7 +6,7 @@ public enum FrameLayoutOption: String, RawRepresentable, LayoutProviderOption {
     case iPhone14Plus = "iPhone 14 Plus Midnight"
     case iPhone14ProMax = "iPhone 14 Pro Max Black"
     case iPhone8Plus = "iPhone 8 Plus Space Gray"
-    case iPadPro129Inch6thGeneration = "iPad Pro (12.9-inch) (6th generation) Space Gray"
+    case iPadPro129Inch4thGeneration = "iPad Pro (12.9-inch) (4th generation) Space Gray"
     case iPadPro129Inch2ndGeneration = "iPad Pro (12.9-inch) (2nd generation) Space Gray"
 
     public init?(argument: String) {
@@ -18,7 +18,7 @@ public enum FrameLayoutOption: String, RawRepresentable, LayoutProviderOption {
         case .iPhone14Plus: return .iPhone14Plus
         case .iPhone14ProMax: return .iPhone14ProMax
         case .iPhone8Plus: return .iPhone8Plus
-        case .iPadPro129Inch6thGeneration: return .iPadPro129Inch6thGeneration
+        case .iPadPro129Inch4thGeneration: return .iPadPro129Inch4thGeneration
         case .iPadPro129Inch2ndGeneration: return .iPadPro129Inch2ndGeneration
         }
     }
@@ -59,7 +59,7 @@ public struct FrameLayout: LayoutProvider {
     public let titleFontSize: CGFloat
     public let textGap: CGFloat
     public let textColor: Color
-    public let backgroundColor: Color
+    public var backgroundColor: Color
 
     public init(
         size: CGSize,
@@ -80,6 +80,24 @@ public struct FrameLayout: LayoutProvider {
         self.titleFontSize = titleFontSize
         self.textGap = textGap
         self.textColor = textColor
+        self.backgroundColor = backgroundColor
+    }
+}
+
+public struct FrameScreen {
+    public let screenshotMatchingPrefixes: [String]
+    public let resultFilename: String
+    public let keyword: String
+    public let title: String
+    public let backgroundImage: URL?
+    public let backgroundColor: Color?
+    
+    public init(screenshotMatchingPrefixes: [String], resultFilename: String, keyword: String, title: String, backgroundImage: URL? = nil, backgroundColor: Color?) {
+        self.screenshotMatchingPrefixes = screenshotMatchingPrefixes
+        self.resultFilename = resultFilename
+        self.keyword = keyword
+        self.title = title
+        self.backgroundImage = backgroundImage
         self.backgroundColor = backgroundColor
     }
 }
@@ -123,7 +141,7 @@ extension FrameLayout {
         backgroundColor: defaultBackgroundColor
     )
 
-    public static let iPadPro129Inch6thGeneration = Self(
+    public static let iPadPro129Inch4thGeneration = Self(
         size: CGSize(width: 2048, height: 2732),
         deviceFrameOffset: CGSize(width: -1, height: 1),
         textInsets: EdgeInsets(top: 48, leading: 96, bottom: 0, trailing: 96),
@@ -199,7 +217,7 @@ extension FrameLayout {
 //}
 
 extension StoreScreenshotView where Self.Layout == FrameLayout {
-    var keywordFont: Font { Font.system(size: layout.keywordFontSize, weight: .bold, design: .default) }
+    var keywordFont: Font { Font.system(size: layout.keywordFontSize, weight: .bold, design: .rounded) }
     var titleFont: Font { Font.system(size: layout.titleFontSize, weight: .regular, design: .default) }
 }
 
@@ -227,35 +245,38 @@ public struct SampleStoreScreenshotView: StoreScreenshotView {
 //                    .resizable()
 //                    .aspectRatio(contentMode: .fit)
 //            }
-
-            // Image
-            ForEach(content.framedScreenshots, id: \.id) { framedScreenshot in
-                HStack(alignment: .bottom) {
-                    Image(nsImage: framedScreenshot.image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+            VStack(spacing: 0) {
+                // Text
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: layout.textGap) {
+                        Text(content.keyword)
+                            .font(keywordFont)
+                            .foregroundColor(layout.textColor)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(nil)
+                        
+                        Text(content.title)
+                            .font(titleFont)
+                            .foregroundColor(layout.textColor)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(nil)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .padding(self.layout.textInsets)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                .padding(layout.imageInsets)
-            }
-
-            // Text
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: layout.textGap) {
-                    Text(content.keyword)
-                        .font(keywordFont)
-                        .foregroundColor(layout.textColor)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(nil)
-
-                    Text(content.title)
-                        .font(titleFont)
-                        .foregroundColor(layout.textColor)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(nil)
+                
+                Spacer(minLength: 0)
+                
+                // Image
+                ForEach(content.framedScreenshots, id: \.id) { framedScreenshot in
+                    HStack(alignment: .bottom) {
+                        Image(nsImage: framedScreenshot.image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .padding(layout.imageInsets)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .padding(self.layout.textInsets)
             }
         }
     }

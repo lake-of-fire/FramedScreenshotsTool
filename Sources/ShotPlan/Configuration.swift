@@ -35,9 +35,14 @@ public extension ShotPlanConfiguration {
     static let defaultDevices: [Device] = [
         Device(simulatorName: "iPhone 14 Plus", displaySize: "6.5", homeStyle: .indicator),
         Device(simulatorName: "iPhone 14 Pro Max", displaySize: "6.7", homeStyle: .indicator),
+        Device(simulatorName: "iPad Pro (12.9-inch) (4th generation)", displaySize: "12.9", homeStyle: .indicator),
+    ]
+    static let appleRequiredDevices = [
         Device(simulatorName: "iPhone 8 Plus", displaySize: "5.5", homeStyle: .button),
-        Device(simulatorName: "iPad Pro (12.9-inch) (6th generation)", displaySize: "12.9", homeStyle: .indicator),
-         Device(simulatorName: "iPad Pro (12.9-inch) (2nd generation)", displaySize: "12.9", homeStyle: .button),
+        Device(simulatorName: "iPad Pro (12.9-inch) (2nd generation)", displaySize: "12.9", homeStyle: .button),
+        Device(simulatorName: "iPhone 14 Plus", displaySize: "6.5", homeStyle: .indicator),
+        Device(simulatorName: "iPhone 14 Pro Max", displaySize: "6.7", homeStyle: .indicator),
+        Device(simulatorName: "iPad Pro (12.9-inch) (4th generation)", displaySize: "12.9", homeStyle: .indicator),
     ]
     
     static func defaultConfiguration(workspaceName: String?, schemeName: String?, testPlan: String?) -> Self {

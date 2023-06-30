@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Device: Codable {
+public struct Device: Codable, Equatable {
     public let simulatorName: String
     public let displaySize: String?
     public let homeStyle: HomeStyle?
@@ -53,5 +53,14 @@ public struct Device: Codable {
     
     public var description: String {
         return "\(idiom?.description ?? "") \(displaySize ?? "")-inch with \(homeStyle?.description ?? "")"
+    }
+    
+    public var screenshots: URL {
+        return Project.targetDirectoryURL.appending(path: description, directoryHint: .isDirectory).appending(path: simulatorName, directoryHint: .isDirectory)
+    }
+    public init(simulatorName: String, displaySize: String? = nil, homeStyle: Device.HomeStyle? = nil) {
+        self.simulatorName = simulatorName
+        self.displaySize = displaySize
+        self.homeStyle = homeStyle
     }
 }
