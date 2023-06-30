@@ -11,6 +11,7 @@ let package = Package(
         .library(name: "ShotPlan", targets: ["ShotPlan"]),
         .executable(name: "ShotPlanCLI", targets: ["ShotPlanCLI"]),
         .library(name: "FramedScreenshots", targets: ["FramedScreenshots"]),
+        .plugin(name: "TakeAppStoreScreenshots", targets: ["TakeAppStoreScreenshots"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.2.2")),
@@ -51,6 +52,17 @@ let package = Package(
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .target(name: "ShotPlan"),
+            ]),
+        .plugin(
+            name: "TakeAppStoreScreenshots",
+            capability: .command(
+                intent: .custom(verb: "generate-framed-screenshots", description: "Generate screenshots for devices."),
+                permissions: [
+                    .writeToPackageDirectory(reason: "Takes screenshots and saves them.")
+                ]
+            ),
+            dependencies: [
+                .target(name: "ShotPlanCLI"),
             ]),
     ]
 )

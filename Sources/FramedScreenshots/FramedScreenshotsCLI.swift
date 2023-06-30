@@ -14,14 +14,15 @@ public struct FramedScreenshotsCLI {
                 missingDevices.append(device)
             }
         }
+        
         let existingDevices: [Device] = ShotPlanConfiguration.appleRequiredDevices.compactMap { device in missingDevices.contains(where: { missingDevice in return (missingDevice == device) }) ? nil : device }
+        
         for device in missingDevices {
             let targetSize = Float(device.displaySize ?? "6.5") ?? 0
             if let replacementDevice = existingDevices.sorted(by: { (Float($0.displaySize ?? "0") ?? 0).distance(to: targetSize) < (Float($1.displaySize ?? "0") ?? 0).distance(to: targetSize) }).first {
                 _ = try generateFinalScreens(forDevice: replacementDevice, screens: screens, output: device.screenshots)
             }
         }
-
     }
     
     static func generateFinalScreens(forDevice device: Device, screens: [FrameScreen], output: URL) throws -> Bool {

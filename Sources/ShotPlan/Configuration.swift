@@ -23,7 +23,6 @@ public struct ShotPlanConfiguration: Codable {
         self.localizeSimulator = localizeSimulator
         self.timeZone = timeZone
     }
-    
 }
 
 public extension ShotPlanConfiguration {

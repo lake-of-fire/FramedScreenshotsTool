@@ -66,7 +66,7 @@ extension ShotPlanCLI {
                 let _ = try? Shell.call("mkdir -p \(screenshotsPath.quoted())")
                 
                 print("Running Tests …")
-                let _ = try? Shell.call("xcodebuild test -workspace \(configuration.workspace) -scheme \(configuration.scheme) -destination \"platform=iOS Simulator,name=\(device.simulatorName)\" -testPlan \(configuration.testPlan) -derivedDataPath \(derivedDataPath.quoted())")
+                let _ = try? Shell.call("cd \(FileManager.default.currentDirectoryPath) && xcodebuild test -workspace \(configuration.workspace) -scheme \(configuration.scheme) -destination \"platform=iOS Simulator,name=\(device.simulatorName)\" -testPlan \(configuration.testPlan) -derivedDataPath \(derivedDataPath.quoted())")
                 
                 print("Copying Screenshots …")
                 let _ = try? Shell.call("find \"\(derivedDataPath)/Logs/Test\" -maxdepth 1 -type d -exec xcparse screenshots --language  {} \(screenshotsPath.quoted()) \\;")
