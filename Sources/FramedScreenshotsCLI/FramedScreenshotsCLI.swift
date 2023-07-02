@@ -19,34 +19,22 @@ public struct FramedScreenshotsCLI {
         let existingDevices: [Device] = allDevices.compactMap { device in missingDevices.contains(where: { missingDevice in return (missingDevice == device) }) ? nil : device }
         
         for device in missingDevices {
-            print("Missing \(device.simulatorName)")
-            print(existingDevices.map{$0.simulatorName})
             if let replacementDevice = existingDevices.sorted(by: { lhs, rhs in
                 let lIdiom = lhs.simulatorName.split(separator: " ").first
                 let rIdiom = rhs.simulatorName.split(separator: " ").first
-                print("comp \(lhs.simulatorName) \(rhs.simulatorName)")
-                print(lIdiom)
-                print(rIdiom)
-                print(device.idiom?.description)
                 if let lIdiom = lIdiom, let rIdiom = rIdiom, let dIdiom = device.idiom?.description, lIdiom != dIdiom || rIdiom != dIdiom {
                     if lIdiom != rIdiom {
                         if lIdiom == dIdiom {
-                            print("tr")
                             return true
                         } else if rIdiom == dIdiom {
-                            print("fal")
                             return false
                         }
                     }
-                    print("huh")
-                            print(lIdiom < rIdiom)
                     return lIdiom < rIdiom
                 }
-                print("size...")
                 
                 let targetSize = Float(device.displaySize ?? "6.5") ?? 0
                 return (abs(Float(lhs.displaySize ?? "0") ?? 0).distance(to: targetSize)) < abs((Float(rhs.displaySize ?? "0") ?? 0).distance(to: targetSize)) }).first {
-                print("rep \(replacementDevice.simulatorName)")
                 _ = try generateFinalScreens(forDevice: replacementDevice, screens: screens, output: device.screenshots)
             }
         }
