@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 import AppKit
 import SwiftUI
@@ -33,9 +34,12 @@ public struct StoreScreenshotRenderer {
             throw Error.imageOperationFailure("Error: can't generate image from view")
         }
         
+        try? FileManager.default.createDirectory(at: URL(fileURLWithPath: outputPath).deletingLastPathComponent(), withIntermediateDirectories: true)
+        
         let result = FileManager.default.createFile(atPath: outputPath, contents: data, attributes: nil)
         guard result else {
             throw Error.fileSavingFailure("Error: can't save generated image at \(String(describing: outputPath))")
         }
     }
 }
+#endif

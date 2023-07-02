@@ -4,10 +4,10 @@
 //
 //  Created by Devran on 14.07.22.
 //
-
+#if os(macOS)
 import Foundation
 
-public struct Device: Codable, Equatable {
+public struct Device: Codable, Equatable, Hashable {
     public let simulatorName: String
     public let displaySize: String?
     public let homeStyle: HomeStyle?
@@ -18,6 +18,7 @@ public struct Device: Codable, Equatable {
     }
     
     public enum Idiom: String, CaseIterable, Codable, CustomStringConvertible {
+        case macbook
         case tablet
         case phone
         case watch
@@ -25,6 +26,8 @@ public struct Device: Codable, Equatable {
         
         public var description: String {
             switch self {
+            case .macbook:
+                return "Macbook"
             case .tablet:
                 return "iPad"
             case .phone:
@@ -52,7 +55,10 @@ public struct Device: Codable, Equatable {
     }
     
     public var description: String {
-        return "\(idiom?.description ?? "") \(displaySize ?? "")-inch with \(homeStyle?.description ?? "")"
+        if let homeStyle = homeStyle {
+            return "\(idiom?.description ?? "") \(displaySize ?? "")-inch with \(homeStyle.description)"
+        }
+        return "\(idiom?.description ?? "") \(displaySize ?? "")-inch"
     }
     
     public var screenshots: URL {
@@ -64,3 +70,4 @@ public struct Device: Codable, Equatable {
         self.homeStyle = homeStyle
     }
 }
+#endif

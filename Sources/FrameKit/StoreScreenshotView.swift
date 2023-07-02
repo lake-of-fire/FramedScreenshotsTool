@@ -1,3 +1,4 @@
+#if os(macOS)
 import SwiftUI
 
 public protocol StoreScreenshotView: View {
@@ -8,3 +9,4 @@ public protocol StoreScreenshotView: View {
     var content: Content { get }
     static func makeView(layout: Layout, content: Content) -> Self
 }
+#endif

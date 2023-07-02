@@ -3,10 +3,13 @@ import SwiftUI
 import FrameKit
 
 public enum FrameLayoutOption: String, RawRepresentable, LayoutProviderOption {
+    case macbookPro13 = "Macbook Pro 13"
+    case iPhone14Pro = "iPhone 14 Pro"
     case iPhone14Plus = "iPhone 14 Plus Midnight"
     case iPhone14ProMax = "iPhone 14 Pro Max Black"
     case iPhone8Plus = "iPhone 8 Plus Space Gray"
     case iPadPro129Inch4thGeneration = "iPad Pro (12.9-inch) (4th generation) Space Gray"
+    case iPadPro129Inch6thGeneration = "iPad Pro (12.9-inch) (6th generation) Space Gray"
     case iPadPro129Inch2ndGeneration = "iPad Pro (12.9-inch) (2nd generation) Space Gray"
 
     public init?(argument: String) {
@@ -15,10 +18,14 @@ public enum FrameLayoutOption: String, RawRepresentable, LayoutProviderOption {
 
     public var value: FrameLayout {
         switch self {
+        case .macbookPro13: return .macbookPro13
+        case .iPhone14Pro: return .iPhone14Pro
         case .iPhone14Plus: return .iPhone14Plus
         case .iPhone14ProMax: return .iPhone14ProMax
         case .iPhone8Plus: return .iPhone8Plus
         case .iPadPro129Inch4thGeneration: return .iPadPro129Inch4thGeneration
+        // TODO: Get new frame for 6th gen. Route to 4th gen until we have a frame.
+        case .iPadPro129Inch6thGeneration: return .iPadPro129Inch4thGeneration
         case .iPadPro129Inch2ndGeneration: return .iPadPro129Inch2ndGeneration
         }
     }
@@ -104,6 +111,29 @@ public struct FrameScreen {
 
 extension FrameLayout {
     public static let defaultBackgroundColor = Color(red: 255 / 255, green: 153 / 255, blue: 51 / 255)
+    
+    public static let macbookPro13 = Self(
+        size: CGSize(width: 3348, height: 1974),
+        deviceFrameOffset: .zero,
+        textInsets: EdgeInsets(top: 36, leading: 96, bottom: 0, trailing: 96),
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: -200, trailing: 84),
+        keywordFontSize: 148,
+        titleFontSize: 72,
+        textGap: 24,
+        textColor: .white,
+        backgroundColor: defaultBackgroundColor
+    )
+    public static let iPhone14Pro = Self(
+        size: CGSize(width: 1179, height: 2556),
+        deviceFrameOffset: .zero,
+        textInsets: EdgeInsets(top: 36, leading: 96, bottom: 0, trailing: 96),
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: -400, trailing: 84),
+        keywordFontSize: 148,
+        titleFontSize: 72,
+        textGap: 24,
+        textColor: .white,
+        backgroundColor: defaultBackgroundColor
+    )
 
     public static let iPhone14Plus = Self(
         size: CGSize(width: 1284, height: 2778),

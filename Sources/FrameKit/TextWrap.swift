@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 //import Algorithms
 import NaturalLanguage
@@ -112,3 +113,4 @@ public struct TextWrap {
         return result
     }
 }
+#endif

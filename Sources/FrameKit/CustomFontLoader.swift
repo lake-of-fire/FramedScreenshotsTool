@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 import CoreText
 
@@ -28,3 +29,4 @@ public class CustomFontLoader {
         registeredFonts.insert(entry)
     }
 }
+#endif

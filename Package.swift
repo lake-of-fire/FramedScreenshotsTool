@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "FrameKit", targets: ["FrameKit"]),
         .library(name: "ShotPlan", targets: ["ShotPlan"]),
         .executable(name: "ShotPlanCLI", targets: ["ShotPlanCLI"]),
-        .library(name: "FramedScreenshots", targets: ["FramedScreenshots"]),
+        .library(name: "FramedScreenshotsCLI", targets: ["FramedScreenshotsCLI"]),
         .plugin(name: "TakeAppStoreScreenshots", targets: ["TakeAppStoreScreenshots"]),
     ],
     dependencies: [
@@ -19,7 +19,9 @@ let package = Package(
     targets: [
         .target(
             name: "FrameKit",
-            dependencies: [],
+            dependencies: [
+                .target(name: "ShotPlan"),
+            ],
             resources: [
 //                .copy("Resources/Frames"),
                 .process("Resources"),
@@ -38,7 +40,7 @@ let package = Package(
             ]
         ),
         .target(
-            name: "FramedScreenshots",
+            name: "FramedScreenshotsCLI",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
 //                .product(name: "ShotPlan", package: "ShotPlan"),

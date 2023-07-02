@@ -8,18 +8,45 @@ import FrameKitLayout
 public struct FramedScreenshotsCLI {
     public static func run(screens: [FrameScreen]) throws {
         var missingDevices = [Device]()
-        for device in ShotPlanConfiguration.appleRequiredDevices {
+        let allDevices = Set(ShotPlanConfiguration.appleRequiredDevices).union(ShotPlanConfiguration.defaultDevices)
+        for device in allDevices {
             let isMissingScreenshots = try generateFinalScreens(forDevice: device, screens: screens, output: device.screenshots)
             if isMissingScreenshots {
                 missingDevices.append(device)
             }
         }
         
-        let existingDevices: [Device] = ShotPlanConfiguration.appleRequiredDevices.compactMap { device in missingDevices.contains(where: { missingDevice in return (missingDevice == device) }) ? nil : device }
+        let existingDevices: [Device] = allDevices.compactMap { device in missingDevices.contains(where: { missingDevice in return (missingDevice == device) }) ? nil : device }
         
         for device in missingDevices {
-            let targetSize = Float(device.displaySize ?? "6.5") ?? 0
-            if let replacementDevice = existingDevices.sorted(by: { (Float($0.displaySize ?? "0") ?? 0).distance(to: targetSize) < (Float($1.displaySize ?? "0") ?? 0).distance(to: targetSize) }).first {
+            print("Missing \(device.simulatorName)")
+            print(existingDevices.map{$0.simulatorName})
+            if let replacementDevice = existingDevices.sorted(by: { lhs, rhs in
+                let lIdiom = lhs.simulatorName.split(separator: " ").first
+                let rIdiom = rhs.simulatorName.split(separator: " ").first
+                print("comp \(lhs.simulatorName) \(rhs.simulatorName)")
+                print(lIdiom)
+                print(rIdiom)
+                print(device.idiom?.description)
+                if let lIdiom = lIdiom, let rIdiom = rIdiom, let dIdiom = device.idiom?.description, lIdiom != dIdiom || rIdiom != dIdiom {
+                    if lIdiom != rIdiom {
+                        if lIdiom == dIdiom {
+                            print("tr")
+                            return true
+                        } else if rIdiom == dIdiom {
+                            print("fal")
+                            return false
+                        }
+                    }
+                    print("huh")
+                            print(lIdiom < rIdiom)
+                    return lIdiom < rIdiom
+                }
+                print("size...")
+                
+                let targetSize = Float(device.displaySize ?? "6.5") ?? 0
+                return (abs(Float(lhs.displaySize ?? "0") ?? 0).distance(to: targetSize)) < abs((Float(rhs.displaySize ?? "0") ?? 0).distance(to: targetSize)) }).first {
+                print("rep \(replacementDevice.simulatorName)")
                 _ = try generateFinalScreens(forDevice: replacementDevice, screens: screens, output: device.screenshots)
             }
         }
@@ -32,28 +59,41 @@ public struct FramedScreenshotsCLI {
         //        let layout = layout.value
         var layout: FrameLayout?
         var frameName = "Apple " + device.simulatorName
-        if device.simulatorName == "iPhone 14 Plus" {
-            layout = FrameLayout.iPhone14ProMax
-            frameName += " Midnight"
-        } else if device.simulatorName == "iPhone 14 Pro Max" {
-            layout = FrameLayout.iPhone14ProMax
-            frameName += " Black"
-        } else if device.simulatorName == "iPhone 8 Plus" {
-            layout = FrameLayout.iPhone8Plus
-            frameName += " Space Gray"
-        } else if device.simulatorName == "iPad Pro (12.9-inch) (4th generation)" {
-            layout = FrameLayout.iPadPro129Inch4thGeneration
-            frameName += " Space Gray"
+        switch device.idiom {
+        case .macbook:
+            if device.simulatorName == "Macbook Pro 13" {
+                layout = FrameLayout.macbookPro13
+                frameName += " Space Gray"
+            }
+        case .phone:
+            if device.simulatorName == "iPhone 14 Pro" {
+                layout = FrameLayout.iPhone14Pro
+                frameName += " Black"
+            } else if device.simulatorName == "iPhone 14 Plus" {
+                layout = FrameLayout.iPhone14Plus
+                frameName += " Midnight"
+            } else if device.simulatorName == "iPhone 14 Pro Max" {
+                layout = FrameLayout.iPhone14ProMax
+                frameName += " Black"
+            } else if device.simulatorName == "iPhone 8 Plus" {
+                layout = FrameLayout.iPhone8Plus
+                frameName += " Space Gray"
+            }
+        case .tablet:
+            if device.simulatorName == "iPad Pro (12.9-inch) (6th generation)" {
+                // TODO: Get new frame for 6th gen. Route to 4th gen until we have a frame.
+                layout = FrameLayout.iPadPro129Inch4thGeneration
+                frameName = "Apple iPad Pro (12.9-inch) (4th generation) Space Gray"
+            } else if device.simulatorName == "iPad Pro (12.9-inch) (4th generation)" {
+                layout = FrameLayout.iPadPro129Inch4thGeneration
+                frameName += " Space Gray"
+            } else if device.simulatorName == "iPad Pro (12.9-inch) (2nd generation)" {
+                layout = FrameLayout.iPadPro129Inch2ndGeneration
+                frameName += " Space Gray"
+            }
+        default: break
         }
-//        if device.simulatorName == "iPad Pro (12.9-inch) (6th generation)" {
-//            layout = FrameLayout.iPadPro129Inch6thGeneration
-//            frameName += " Space Gray"
-//        }
-        if device.simulatorName == "iPad Pro (12.9-inch) (2nd generation)" {
-            layout = FrameLayout.iPadPro129Inch2ndGeneration
-            frameName += " Space Gray"
-        }
-        guard let layout = layout else { fatalError("Device simulator name \(device.simulatorName) not recognized") }
+        guard let layout = layout else { fatalError("Device name \(device.simulatorName) not recognized") }
         
         for screen in screens {
             var layout = layout

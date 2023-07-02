@@ -1,3 +1,4 @@
+#if os(macOS)
 import AppKit
 
 // To expand a file path written as relative path
@@ -15,3 +16,4 @@ func convertToImage(view: NSView, format: NSBitmapImageRep.FileType) -> Data? {
     view.cacheDisplay(in: view.frame, to: bitmapRepresentation)
     return bitmapRepresentation.representation(using: format, properties: [:])
 }
+#endif

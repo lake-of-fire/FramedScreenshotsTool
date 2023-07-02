@@ -1,6 +1,7 @@
 #if os(macOS)
 import AppKit
 import SwiftUI
+import ShotPlan
 
 /// `DeviceFrame` provides a way to embed app screenshot into device frame image.
 public struct DeviceFrame {
@@ -30,22 +31,33 @@ public struct DeviceFrame {
             }
             throw Error.fileNotFound("device frame was not found for name \(deviceName) from choices: \(s)")
         }
+        
+        var deviceIdiom = Device.Idiom.phone
+        if deviceName.starts(with: "Macbook") {
+            deviceIdiom = .macbook
+        } else if deviceName.starts(with: "iPad") {
+            deviceIdiom = .tablet
+        } else if deviceName.starts(with: "Watch") {
+            deviceIdiom = .watch
+        }
 
         // Device frame's image needs to be generted separaratedly to make framing logic easy
         return makeDeviceFrameImage(
             screenshot: screenshotImage,
+            deviceIdiom: deviceIdiom,
             deviceFrame: deviceFrameImage,
             deviceFrameOffset: deviceFrameOffset
         )
     }
 
-    public static func makeDeviceFrameImage(screenshot: NSImage, deviceFrame: NSImage, deviceFrameOffset: CGSize) -> NSImage? {
-        let pngData = makeDeviceFrameData(screenshot: screenshot, deviceFrame: deviceFrame, deviceFrameOffset: deviceFrameOffset)
+    public static func makeDeviceFrameImage(screenshot: NSImage, deviceIdiom: Device.Idiom, deviceFrame: NSImage, deviceFrameOffset: CGSize) -> NSImage? {
+        let pngData = makeDeviceFrameData(screenshot: screenshot, deviceIdiom: deviceIdiom, deviceFrame: deviceFrame, deviceFrameOffset: deviceFrameOffset)
         return pngData.flatMap { NSImage(data: $0) }
     }
 
-    public static func makeDeviceFrameData(screenshot: NSImage, deviceFrame: NSImage, deviceFrameOffset: CGSize) -> Data? {
+    public static func makeDeviceFrameData(screenshot: NSImage, deviceIdiom: Device.Idiom, deviceFrame: NSImage, deviceFrameOffset: CGSize) -> Data? {
         let deviceFrameView = DeviceFrameView(
+            deviceIdiom: deviceIdiom,
             deviceFrame: deviceFrame,
             screenshot: screenshot,
             offset: deviceFrameOffset

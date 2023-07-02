@@ -11,11 +11,11 @@ public struct ShotPlanConfiguration: Codable {
     public let workspace: String
     public let scheme: String
     public let testPlan: String
-    public let devices: [Device]
+    public var devices: [Device]? = nil
     public let localizeSimulator: Bool
     public let timeZone: String
     
-    public init(workspace: String, scheme: String, testPlan: String, devices: [Device], localizeSimulator: Bool, timeZone: String) {
+    public init(workspace: String, scheme: String, testPlan: String, devices: [Device]? = nil, localizeSimulator: Bool, timeZone: String) {
         self.workspace = workspace
         self.scheme = scheme
         self.testPlan = testPlan
@@ -32,9 +32,10 @@ public extension ShotPlanConfiguration {
     static let defaultTestPlan: String = "YOUR_TESTPLAN"
     static let defaultTimeZone: String = "America/Los_Angeles"
     static let defaultDevices: [Device] = [
+        Device(simulatorName: "iPhone 14 Pro", displaySize: "6.1", homeStyle: .indicator),
         Device(simulatorName: "iPhone 14 Plus", displaySize: "6.5", homeStyle: .indicator),
         Device(simulatorName: "iPhone 14 Pro Max", displaySize: "6.7", homeStyle: .indicator),
-        Device(simulatorName: "iPad Pro (12.9-inch) (4th generation)", displaySize: "12.9", homeStyle: .indicator),
+        Device(simulatorName: "iPad Pro (12.9-inch) (6th generation)", displaySize: "12.9", homeStyle: .indicator),
     ]
     static let appleRequiredDevices = [
         Device(simulatorName: "iPhone 8 Plus", displaySize: "5.5", homeStyle: .button),
@@ -42,6 +43,7 @@ public extension ShotPlanConfiguration {
         Device(simulatorName: "iPhone 14 Plus", displaySize: "6.5", homeStyle: .indicator),
         Device(simulatorName: "iPhone 14 Pro Max", displaySize: "6.7", homeStyle: .indicator),
         Device(simulatorName: "iPad Pro (12.9-inch) (4th generation)", displaySize: "12.9", homeStyle: .indicator),
+        Device(simulatorName: "Macbook Pro 13", displaySize: "13"),
     ]
     
     static func defaultConfiguration(workspaceName: String?, schemeName: String?, testPlan: String?) -> Self {

@@ -17,17 +17,17 @@ public struct Shell {
         task.standardOutput = pipe
         task.standardError = pipe
         task.currentDirectoryURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        task.arguments = [command]
         if let executable = executable {
             task.executableURL = URL(fileURLWithPath: executable)
-            task.arguments = [command]
         } else {
             task.executableURL = URL(fileURLWithPath: "/bin/zsh")
-            task.arguments = ["-c", command]
+            task.arguments = ["-c"] + (task.arguments ?? [])
         }
         task.standardInput = nil
         
-        print("Working directory: \(task.currentDirectoryURL?.path ?? "(none found)")")
-        print("$ \(task.executableURL?.path ?? "") \(task.arguments?.joined(separator: " ") ?? "") \(command)")
+//        print("Working directory: \(task.currentDirectoryURL?.path ?? "(none found)")")
+        print("$ [\(task.executableURL?.path ?? "")] \(task.arguments?.joined(separator: " ") ?? "")")
         try task.run()
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
