@@ -8,15 +8,14 @@ import FrameKitLayout
 public struct FramedScreenshotsCLI {
     public static func run(screens: [FrameScreen]) throws {
         var missingDevices = [Device]()
-        let allDevices = Set(ShotPlanConfiguration.appleRequiredDevices).union(ShotPlanConfiguration.defaultDevices)
-        for device in allDevices {
+        for device in ShotPlanConfiguration.allDevices {
             let isMissingScreenshots = try generateFinalScreens(forDevice: device, screens: screens, output: device.screenshots)
             if isMissingScreenshots {
                 missingDevices.append(device)
             }
         }
         
-        let existingDevices: [Device] = allDevices.compactMap { device in missingDevices.contains(where: { missingDevice in return (missingDevice == device) }) ? nil : device }
+        let existingDevices: [Device] = ShotPlanConfiguration.allDevices.compactMap { device in missingDevices.contains(where: { missingDevice in return (missingDevice == device) }) ? nil : device }
         
         for device in missingDevices {
             if let replacementDevice = existingDevices.sorted(by: { lhs, rhs in
@@ -49,9 +48,10 @@ public struct FramedScreenshotsCLI {
         var frameName = "Apple " + device.simulatorName
         switch device.idiom {
         case .macbook:
-            if device.simulatorName == "Macbook Pro 13" {
+            if device.simulatorName.hasPrefix("Macbook Pro") {
+                // TODO: Get new frame for 6th gen. Route to 4th gen until we have a frame.
                 layout = FrameLayout.macbookPro13
-                frameName += " Space Gray"
+                frameName = "Apple Macbook Pro 13 Space Gray"
             }
         case .phone:
             if device.simulatorName == "iPhone 14 Pro" {
@@ -134,7 +134,7 @@ public struct FramedScreenshotsCLI {
             //        if isHero {
             //            try render(SampleHeroStoreScreenshotView.makeView(layout: layout, content: content))
             //        } else {
-            try render(SampleStoreScreenshotView.makeView(layout: layout, content: content))
+            try render(SampleStoreScreenshotView.makeView(layout: layout, content: content, deviceIdiom: device.idiom))
             //        }
         }
         return false

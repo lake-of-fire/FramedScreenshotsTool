@@ -1,6 +1,7 @@
 #if os(macOS)
 import SwiftUI
 import FrameKit
+import ShotPlan
 
 public enum FrameLayoutOption: String, RawRepresentable, LayoutProviderOption {
     case macbookPro13 = "Macbook Pro 13"
@@ -60,6 +61,7 @@ public struct FrameContent {
 public struct FrameLayout: LayoutProvider {
     public let size: CGSize
     public let deviceFrameOffset: CGSize
+    public let minTextHeight: CGFloat
     public let textInsets: EdgeInsets
     public let imageInsets: EdgeInsets
     public let keywordFontSize: CGFloat
@@ -71,6 +73,7 @@ public struct FrameLayout: LayoutProvider {
     public init(
         size: CGSize,
         deviceFrameOffset: CGSize,
+        minTextHeight: CGFloat,
         textInsets: EdgeInsets,
         imageInsets: EdgeInsets,
         keywordFontSize: CGFloat,
@@ -81,6 +84,7 @@ public struct FrameLayout: LayoutProvider {
     ) {
         self.size = size
         self.deviceFrameOffset = deviceFrameOffset
+        self.minTextHeight = minTextHeight
         self.textInsets = textInsets
         self.imageInsets = imageInsets
         self.keywordFontSize = keywordFontSize
@@ -111,26 +115,35 @@ public struct FrameScreen {
 
 extension FrameLayout {
     public static let defaultBackgroundColor = Color(red: 255 / 255, green: 153 / 255, blue: 51 / 255)
+    static let defaultImageBottomInset: CGFloat = 100
+    static let defaultTextGap: CGFloat = 50
+    static let defaultKeywordFontSize: CGFloat = 148
+    static let defaultTitleFontSize: CGFloat = 55
+    static let defaultTextInsets = EdgeInsets(top: 30, leading: 50, bottom: 0, trailing: 50)
     
     public static let macbookPro13 = Self(
+//        size: CGSize(width: 3024, height: 1964),
         size: CGSize(width: 3348, height: 1974),
         deviceFrameOffset: .zero,
-        textInsets: EdgeInsets(top: 36, leading: 96, bottom: 0, trailing: 96),
-        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: -200, trailing: 84),
-        keywordFontSize: 148,
-        titleFontSize: 72,
-        textGap: 24,
+        minTextHeight: 560,
+        textInsets: defaultTextInsets,
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
+        keywordFontSize: defaultKeywordFontSize,
+        titleFontSize: defaultTitleFontSize,
+        textGap: defaultTextGap,
         textColor: .white,
         backgroundColor: defaultBackgroundColor
     )
+    
     public static let iPhone14Pro = Self(
         size: CGSize(width: 1179, height: 2556),
         deviceFrameOffset: .zero,
-        textInsets: EdgeInsets(top: 36, leading: 96, bottom: 0, trailing: 96),
-        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: -400, trailing: 84),
-        keywordFontSize: 148,
-        titleFontSize: 72,
-        textGap: 24,
+        minTextHeight: 400,
+        textInsets: defaultTextInsets,
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
+        keywordFontSize: defaultKeywordFontSize,
+        titleFontSize: defaultTitleFontSize,
+        textGap: defaultTextGap,
         textColor: .white,
         backgroundColor: defaultBackgroundColor
     )
@@ -138,11 +151,12 @@ extension FrameLayout {
     public static let iPhone14Plus = Self(
         size: CGSize(width: 1284, height: 2778),
         deviceFrameOffset: .zero,
-        textInsets: EdgeInsets(top: 36, leading: 96, bottom: 0, trailing: 96),
-        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: -500, trailing: 84),
-        keywordFontSize: 148,
-        titleFontSize: 72,
-        textGap: 24,
+        minTextHeight: 400,
+        textInsets: defaultTextInsets,
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
+        keywordFontSize: defaultKeywordFontSize,
+        titleFontSize: defaultTitleFontSize,
+        textGap: defaultTextGap,
         textColor: .white,
         backgroundColor: defaultBackgroundColor
     )
@@ -150,11 +164,12 @@ extension FrameLayout {
     public static let iPhone14ProMax = Self(
         size: CGSize(width: 1290, height: 2796),
         deviceFrameOffset: .zero,
-        textInsets: EdgeInsets(top: 36, leading: 96, bottom: 0, trailing: 96),
-        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: -500, trailing: 84),
-        keywordFontSize: 148,
-        titleFontSize: 72,
-        textGap: 24,
+        minTextHeight: 400,
+        textInsets: defaultTextInsets,
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
+        keywordFontSize: defaultKeywordFontSize,
+        titleFontSize: defaultTitleFontSize,
+        textGap: defaultTextGap,
         textColor: .white,
         backgroundColor: defaultBackgroundColor
     )
@@ -162,11 +177,12 @@ extension FrameLayout {
     public static let iPhone8Plus = Self(
         size: CGSize(width: 1242, height: 2208),
         deviceFrameOffset: .zero,
-        textInsets: EdgeInsets(top: 48, leading: 96, bottom: 0, trailing: 96),
-        imageInsets: EdgeInsets(top: 0, leading: 150, bottom: -200, trailing: 150),
-        keywordFontSize: 148,
-        titleFontSize: 72,
-        textGap: 24,
+        minTextHeight: 400,
+        textInsets: defaultTextInsets,
+        imageInsets: EdgeInsets(top: 0, leading: 150, bottom: defaultImageBottomInset, trailing: 150),
+        keywordFontSize: defaultKeywordFontSize,
+        titleFontSize: defaultTitleFontSize,
+        textGap: defaultTextGap,
         textColor: .white,
         backgroundColor: defaultBackgroundColor
     )
@@ -174,11 +190,12 @@ extension FrameLayout {
     public static let iPadPro129Inch4thGeneration = Self(
         size: CGSize(width: 2048, height: 2732),
         deviceFrameOffset: CGSize(width: -1, height: 1),
-        textInsets: EdgeInsets(top: 48, leading: 96, bottom: 0, trailing: 96),
-        imageInsets: EdgeInsets(top: 0, leading: 96, bottom: -200, trailing: 96),
-        keywordFontSize: 148,
-        titleFontSize: 72,
-        textGap: 24,
+        minTextHeight: 400,
+        textInsets: defaultTextInsets,
+        imageInsets: EdgeInsets(top: 0, leading: 96, bottom: defaultImageBottomInset, trailing: 96),
+        keywordFontSize: defaultKeywordFontSize,
+        titleFontSize: defaultTitleFontSize,
+        textGap: defaultTextGap,
         textColor: .white,
         backgroundColor: defaultBackgroundColor
     )
@@ -186,11 +203,12 @@ extension FrameLayout {
     public static let iPadPro129Inch2ndGeneration = Self(
         size: CGSize(width: 2048, height: 2732),
         deviceFrameOffset: CGSize(width: -1, height: 1),
-        textInsets: EdgeInsets(top: 48, leading: 96, bottom: 0, trailing: 96),
-        imageInsets: EdgeInsets(top: 0, leading: 96, bottom: -200, trailing: 96),
-        keywordFontSize: 148,
-        titleFontSize: 72,
-        textGap: 24,
+        minTextHeight: 400,
+        textInsets: defaultTextInsets,
+        imageInsets: EdgeInsets(top: 0, leading: 96, bottom: defaultImageBottomInset, trailing: 96),
+        keywordFontSize: defaultKeywordFontSize,
+        titleFontSize: defaultTitleFontSize,
+        textGap: defaultTextGap,
         textColor: .white,
         backgroundColor: defaultBackgroundColor
     )
@@ -254,16 +272,43 @@ extension StoreScreenshotView where Self.Layout == FrameLayout {
 public struct SampleStoreScreenshotView: StoreScreenshotView {
     public let layout: FrameLayout
     public let content: FrameContent
+    public let deviceIdiom: Device.Idiom?
 
-    public static func makeView(layout: FrameLayout, content: FrameContent) -> Self {
-        Self(layout: layout, content: content)
+    public static func makeView(layout: FrameLayout, content: FrameContent, deviceIdiom: Device.Idiom?) -> Self {
+        Self(layout: layout, content: content, deviceIdiom: deviceIdiom)
     }
 
-    public init(layout: FrameLayout, content: FrameContent) {
+    public init(layout: FrameLayout, content: FrameContent, deviceIdiom: Device.Idiom?) {
         self.layout = layout
         self.content = content
+        self.deviceIdiom = deviceIdiom
     }
 
+    @ViewBuilder var headerView: some View {
+        // Text
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: layout.textGap) {
+                Group {
+                    Text(content.keyword)
+                        .font(keywordFont)
+                        .foregroundColor(layout.textColor)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(nil)
+                    
+                    Text(content.title)
+                        .font(titleFont)
+                        .foregroundColor(layout.textColor)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(nil)
+                }
+                .tracking(2)
+                .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .padding(self.layout.textInsets)
+        }
+    }
+    
     public var body: some View {
         ZStack {
             // Background Color
@@ -275,43 +320,31 @@ public struct SampleStoreScreenshotView: StoreScreenshotView {
 //                    .resizable()
 //                    .aspectRatio(contentMode: .fit)
 //            }
-            VStack(spacing: 0) {
-                // Text
-                HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: layout.textGap) {
-                        Text(content.keyword)
-                            .font(keywordFont)
-                            .foregroundColor(layout.textColor)
-                            .multilineTextAlignment(.leading)
-                            .lineLimit(nil)
-                        
-                        Text(content.title)
-                            .font(titleFont)
-                            .foregroundColor(layout.textColor)
-                            .multilineTextAlignment(.leading)
-                            .lineLimit(nil)
+            ScrollView {
+                VStack(spacing: 0) {
+                    headerView
+                        .frame(minHeight: layout.minTextHeight)
+                    
+                    Spacer()
+                        .frame(height: 50)
+                    
+                    // Image
+                    ForEach(content.framedScreenshots, id: \.id) { framedScreenshot in
+                        HStack(alignment: .bottom) {
+                            Image(nsImage: framedScreenshot.image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                        .padding(layout.imageInsets)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                    .padding(self.layout.textInsets)
-                }
-                
-                Spacer(minLength: 0)
-                
-                // Image
-                ForEach(content.framedScreenshots, id: \.id) { framedScreenshot in
-                    HStack(alignment: .bottom) {
-                        Image(nsImage: framedScreenshot.image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                    .padding(layout.imageInsets)
                 }
             }
         }
     }
 }
 
+/*
 public struct SampleHeroStoreScreenshotView: StoreScreenshotView {
     public let layout: FrameLayout
     public let content: FrameContent
@@ -376,4 +409,5 @@ public struct SampleHeroStoreScreenshotView: StoreScreenshotView {
         }
     }
 }
+ */
 #endif

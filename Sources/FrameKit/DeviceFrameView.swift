@@ -31,20 +31,21 @@ public struct DeviceFrameView: View {
     }
     
     public var body: some View {
-        // Two images are combined by overlapping each other on ZStack
-        ZStack {
+        if deviceIdiom == .macbook {
             Image(nsImage: screenshot)
                 .resizable()
                 .frame(width: screenshotSize.width, height: screenshotSize.height)
                 .offset(self.offset)
-            Image(nsImage: deviceFrame)
-                .resizable()
-                .frame(width: deviceFrame.size.width, height: deviceFrame.size.height)
-            HStack {
-                Text("\(screenshot.size.width)")
-                Text("\(screenshot.size.height)")
-                Text("\(deviceFrame.size.width)")
-                Text("\(deviceFrame.size.height)")
+        } else {
+            // Two images are combined by overlapping each other on ZStack
+            ZStack {
+                Image(nsImage: screenshot)
+                    .resizable()
+                    .frame(width: screenshotSize.width, height: screenshotSize.height)
+                    .offset(self.offset)
+                Image(nsImage: deviceFrame)
+                    .resizable()
+                    .frame(width: deviceFrame.size.width, height: deviceFrame.size.height)
             }
         }
     }

@@ -45,6 +45,9 @@ public extension ShotPlanConfiguration {
         Device(simulatorName: "iPad Pro (12.9-inch) (4th generation)", displaySize: "12.9", homeStyle: .indicator),
         Device(simulatorName: "Macbook Pro 13", displaySize: "13"),
     ]
+    static let allDevices = Set(defaultDevices).union(appleRequiredDevices).union([
+        Device(simulatorName: "Macbook Pro 14", displaySize: "14"),
+    ])
     
     static func defaultConfiguration(workspaceName: String?, schemeName: String?, testPlan: String?) -> Self {
         return Self(workspace: workspaceName ?? defaultWorkspaceName,

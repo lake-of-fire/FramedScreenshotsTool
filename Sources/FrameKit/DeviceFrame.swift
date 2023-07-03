@@ -33,11 +33,11 @@ public struct DeviceFrame {
         }
         
         var deviceIdiom = Device.Idiom.phone
-        if deviceName.starts(with: "Macbook") {
+        if deviceName.starts(with: "Apple Macbook") {
             deviceIdiom = .macbook
-        } else if deviceName.starts(with: "iPad") {
+        } else if deviceName.starts(with: "Apple iPad") {
             deviceIdiom = .tablet
-        } else if deviceName.starts(with: "Watch") {
+        } else if deviceName.starts(with: "Apple Watch") {
             deviceIdiom = .watch
         }
 
@@ -56,6 +56,10 @@ public struct DeviceFrame {
     }
 
     public static func makeDeviceFrameData(screenshot: NSImage, deviceIdiom: Device.Idiom, deviceFrame: NSImage, deviceFrameOffset: CGSize) -> Data? {
+        var deviceFrame = deviceFrame
+        if deviceIdiom == .macbook {
+            deviceFrame = trim(image: deviceFrame, rect: CGRect(x: 0, y: 150, width: deviceFrame.size.width, height: deviceFrame.size.height - 150))
+        }
         let deviceFrameView = DeviceFrameView(
             deviceIdiom: deviceIdiom,
             deviceFrame: deviceFrame,
@@ -68,6 +72,17 @@ public struct DeviceFrame {
 
         // Use png here to use alpha layer
         return convertToImage(view: view, format: .png)
+    }
+    
+    private static func trim(image: NSImage, rect: CGRect) -> NSImage {
+        let result = NSImage(size: rect.size)
+        result.lockFocus()
+
+        let destRect = CGRect(origin: .zero, size: result.size)
+        image.draw(in: destRect, from: rect, operation: .copy, fraction: 1.0)
+
+        result.unlockFocus()
+        return result
     }
 }
 #endif

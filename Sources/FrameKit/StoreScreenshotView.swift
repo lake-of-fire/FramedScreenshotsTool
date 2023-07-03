@@ -1,5 +1,6 @@
 #if os(macOS)
 import SwiftUI
+import ShotPlan
 
 public protocol StoreScreenshotView: View {
     associatedtype Layout: LayoutProvider
@@ -7,6 +8,7 @@ public protocol StoreScreenshotView: View {
 
     var layout: Layout { get }
     var content: Content { get }
-    static func makeView(layout: Layout, content: Content) -> Self
+    var deviceIdiom: Device.Idiom? { get }
+    static func makeView(layout: Layout, content: Content, deviceIdiom: Device.Idiom?) -> Self
 }
 #endif
