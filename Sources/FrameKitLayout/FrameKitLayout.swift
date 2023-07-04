@@ -119,11 +119,11 @@ extension FrameLayout {
     static let defaultTextGap: CGFloat = 50
     static let defaultKeywordFontSize: CGFloat = 148
     static let defaultTitleFontSize: CGFloat = 55
-    static let defaultTextInsets = EdgeInsets(top: 30, leading: 50, bottom: 0, trailing: 50)
+    static let defaultTextInsets = EdgeInsets(top: 36, leading: 70, bottom: 0, trailing: 70)
     
     public static let macbookPro13 = Self(
 //        size: CGSize(width: 3024, height: 1964),
-        size: CGSize(width: 3348, height: 1974),
+        size: CGSize(width: 2880, height: 1800),
         deviceFrameOffset: .zero,
         minTextHeight: 560,
         textInsets: defaultTextInsets,
@@ -149,7 +149,7 @@ extension FrameLayout {
     )
 
     public static let iPhone14Plus = Self(
-        size: CGSize(width: 1284, height: 2778),
+        size: CGSize(width: 1242, height: 2208),
         deviceFrameOffset: .zero,
         minTextHeight: 400,
         textInsets: defaultTextInsets,

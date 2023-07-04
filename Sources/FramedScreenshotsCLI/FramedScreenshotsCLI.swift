@@ -34,18 +34,19 @@ public struct FramedScreenshotsCLI {
                 
                 let targetSize = Float(device.displaySize ?? "6.5") ?? 0
                 return (abs(Float(lhs.displaySize ?? "0") ?? 0).distance(to: targetSize)) < abs((Float(rhs.displaySize ?? "0") ?? 0).distance(to: targetSize)) }).first {
-                _ = try generateFinalScreens(forDevice: replacementDevice, screens: screens, output: device.screenshots)
+                _ = try generateFinalScreens(forDevice: device, usingDeviceImagesFromDevice: replacementDevice, screens: screens, output: device.screenshots)
             }
         }
     }
     
-    static func generateFinalScreens(forDevice device: Device, screens: [FrameScreen], output: URL) throws -> Bool {
+    static func generateFinalScreens(forDevice device: Device, usingDeviceImagesFromDevice replacementDevice: Device? = nil, screens: [FrameScreen], output: URL) throws -> Bool {
         let locale = "en_US"
     //    let layoutDirection: LayoutDirection = device..isRTL ? .rightToLeft : .leftToRight
         let layoutDirection = LayoutDirection.leftToRight
         //        let layout = layout.value
         var layout: FrameLayout?
-        var frameName = "Apple " + device.simulatorName
+        let frameDevice = replacementDevice ?? device
+        var frameName = "Apple " + frameDevice.simulatorName
         switch device.idiom {
         case .macbook:
             if device.simulatorName.hasPrefix("Macbook Pro") {
@@ -56,27 +57,37 @@ public struct FramedScreenshotsCLI {
         case .phone:
             if device.simulatorName == "iPhone 14 Pro" {
                 layout = FrameLayout.iPhone14Pro
-                frameName += " Black"
             } else if device.simulatorName == "iPhone 14 Plus" {
                 layout = FrameLayout.iPhone14Plus
-                frameName += " Midnight"
             } else if device.simulatorName == "iPhone 14 Pro Max" {
                 layout = FrameLayout.iPhone14ProMax
-                frameName += " Black"
             } else if device.simulatorName == "iPhone 8 Plus" {
                 layout = FrameLayout.iPhone8Plus
+            }
+            if frameDevice.simulatorName == "iPhone 14 Pro" {
+                frameName += " Black"
+            } else if frameDevice.simulatorName == "iPhone 14 Plus" {
+                frameName += " Midnight"
+            } else if frameDevice.simulatorName == "iPhone 14 Pro Max" {
+                frameName += " Black"
+            } else if frameDevice.simulatorName == "iPhone 8 Plus" {
                 frameName += " Space Gray"
             }
         case .tablet:
             if device.simulatorName == "iPad Pro (12.9-inch) (6th generation)" {
                 // TODO: Get new frame for 6th gen. Route to 4th gen until we have a frame.
                 layout = FrameLayout.iPadPro129Inch4thGeneration
-                frameName = "Apple iPad Pro (12.9-inch) (4th generation) Space Gray"
             } else if device.simulatorName == "iPad Pro (12.9-inch) (4th generation)" {
                 layout = FrameLayout.iPadPro129Inch4thGeneration
-                frameName += " Space Gray"
             } else if device.simulatorName == "iPad Pro (12.9-inch) (2nd generation)" {
                 layout = FrameLayout.iPadPro129Inch2ndGeneration
+            }
+            if frameDevice.simulatorName == "iPad Pro (12.9-inch) (6th generation)" {
+                // TODO: Get new frame for 6th gen. Route to 4th gen until we have a frame.
+                frameName = "Apple iPad Pro (12.9-inch) (4th generation) Space Gray"
+            } else if frameDevice.simulatorName == "iPad Pro (12.9-inch) (4th generation)" {
+                frameName += " Space Gray"
+            } else if frameDevice.simulatorName == "iPad Pro (12.9-inch) (2nd generation)" {
                 frameName += " Space Gray"
             }
         default: break
@@ -89,7 +100,7 @@ public struct FramedScreenshotsCLI {
                 layout.backgroundColor = backgroundColor
             }
             // Device frame's image needs to be generted separaratedly to make framing logic easy
-            let orderedURLs = try? FileManager.default.contentsOfDirectory(at: device.screenshots, includingPropertiesForKeys: [.creationDateKey], options: .skipsHiddenFiles).sorted(by: {
+            let orderedURLs = try? FileManager.default.contentsOfDirectory(at: (replacementDevice ?? device).screenshots, includingPropertiesForKeys: [.creationDateKey], options: .skipsHiddenFiles).sorted(by: {
                 if let date1 = try? $0.resourceValues(forKeys: [.creationDateKey]).creationDate,
                    let date2 = try? $1.resourceValues(forKeys: [.creationDateKey]).creationDate {
                     return date1 < date2
