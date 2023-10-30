@@ -134,6 +134,7 @@ public struct FramedScreenshotsCLI {
                 keyword: screen.keyword,
                 title: screen.title,
                 backgroundImage: [screen.backgroundImage].compactMap({ $0 }).compactMap({ NSImage(contentsOfFile: $0.absoluteString) }).first,
+                sfSymbol: screen.sfSymbol,
                 framedScreenshots: deviceFrameImages)
             //framedScreenshots.compactMap { NSImage(contentsOfFile: $0.absoluteString) })
             
@@ -145,7 +146,11 @@ public struct FramedScreenshotsCLI {
             //        if isHero {
             //            try render(SampleHeroStoreScreenshotView.makeView(layout: layout, content: content))
             //        } else {
-            try render(SampleStoreScreenshotView.makeView(layout: layout, content: content, deviceIdiom: device.idiom))
+            if screen.screenshotMatchingPrefixes.isEmpty {
+                try render(SFSymbolView.makeView(layout: layout, content: content, deviceIdiom: device.idiom))
+            } else {
+                try render(SampleStoreScreenshotView.makeView(layout: layout, content: content, deviceIdiom: device.idiom))
+            }
             //        }
         }
         return false

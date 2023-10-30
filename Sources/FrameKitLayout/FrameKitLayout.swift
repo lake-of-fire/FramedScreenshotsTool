@@ -37,6 +37,7 @@ public struct FrameContent {
     public let keyword: String
     public let title: String
     public let backgroundImage: NSImage?
+    public let sfSymbol: String?
     public let framedScreenshots: [FramedScreenshot]
 
     public struct FramedScreenshot: Identifiable {
@@ -49,11 +50,12 @@ public struct FrameContent {
         }
     }
     
-    public init(locale: Locale, keyword: String, title: String, backgroundImage: NSImage? = nil, framedScreenshots: [FramedScreenshot]) {
+    public init(locale: Locale, keyword: String, title: String, backgroundImage: NSImage? = nil, sfSymbol: String?, framedScreenshots: [FramedScreenshot]) {
         self.locale = locale
         self.keyword = keyword
         self.title = title
         self.backgroundImage = backgroundImage
+        self.sfSymbol = sfSymbol
         self.framedScreenshots = framedScreenshots
     }
 }
@@ -101,14 +103,16 @@ public struct FrameScreen {
     public let keyword: String
     public let title: String
     public let backgroundImage: URL?
+    public let sfSymbol: String?
     public let backgroundColor: Color?
     
-    public init(screenshotMatchingPrefixes: [String], resultFilename: String, keyword: String, title: String, backgroundImage: URL? = nil, backgroundColor: Color?) {
+    public init(screenshotMatchingPrefixes: [String], resultFilename: String, keyword: String, title: String, backgroundImage: URL? = nil, sfSymbol: String? = nil, backgroundColor: Color?) {
         self.screenshotMatchingPrefixes = screenshotMatchingPrefixes
         self.resultFilename = resultFilename
         self.keyword = keyword
         self.title = title
         self.backgroundImage = backgroundImage
+        self.sfSymbol = sfSymbol
         self.backgroundColor = backgroundColor
     }
 }
@@ -162,7 +166,8 @@ extension FrameLayout {
     )
     
     public static let iPhone14ProMax = Self(
-        size: CGSize(width: 1290, height: 2796),
+//        size: CGSize(width: 1242, height: 2688),
+        size: CGSize(width: 1284, height: 2778),
         deviceFrameOffset: .zero,
         minTextHeight: 400,
         textInsets: defaultTextInsets,
@@ -337,6 +342,78 @@ public struct SampleStoreScreenshotView: StoreScreenshotView {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                         .padding(layout.imageInsets)
+                    }
+                }
+            }
+        }
+    }
+}
+
+public struct SFSymbolView: StoreScreenshotView {
+    public let layout: FrameLayout
+    public let content: FrameContent
+    public let deviceIdiom: Device.Idiom?
+
+    public static func makeView(layout: FrameLayout, content: FrameContent, deviceIdiom: Device.Idiom?) -> Self {
+        Self(layout: layout, content: content, deviceIdiom: deviceIdiom)
+    }
+
+    public init(layout: FrameLayout, content: FrameContent, deviceIdiom: Device.Idiom?) {
+        self.layout = layout
+        self.content = content
+        self.deviceIdiom = deviceIdiom
+    }
+
+    @ViewBuilder var headerView: some View {
+        // Text
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: layout.textGap) {
+                Group {
+                    Text(content.keyword)
+                        .font(keywordFont)
+                        .foregroundColor(layout.textColor)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(nil)
+                    
+                    Text(content.title)
+                        .font(titleFont)
+                        .foregroundColor(layout.textColor)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(nil)
+                }
+                .tracking(2)
+                .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .padding(self.layout.textInsets)
+        }
+    }
+    
+    public var body: some View {
+        ZStack {
+            // Background Color
+            layout.backgroundColor
+
+            // Background Image
+//            content.backgroundImage.map { backgroundImage in
+//                Image(nsImage: backgroundImage)
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//            }
+            ScrollView {
+                VStack(spacing: 0) {
+                    headerView
+                        .frame(minHeight: layout.minTextHeight)
+                    
+                    Spacer()
+                        .frame(height: 50)
+                    
+                    if let sfSymbol = content.sfSymbol {
+                        Image(systemName: sfSymbol)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                            .padding(layout.imageInsets)
                     }
                 }
             }
