@@ -414,14 +414,17 @@ public struct SFSymbolView: StoreScreenshotView {
                     
                     if let sfSymbol = content.sfSymbol {
                         Spacer(minLength: 0)
-                        ZStack {
+                        HStack {
+                            Spacer(minLength: 0)
                             Image(systemName: sfSymbol)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .foregroundStyle(content.sfSymbolTint ?? layout.textColor)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                                 .padding(layout.imageInsets)
+                            Spacer(minLength: 0)
                         }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                 }
             }
