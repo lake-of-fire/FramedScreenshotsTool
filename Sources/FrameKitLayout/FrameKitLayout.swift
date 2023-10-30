@@ -38,6 +38,7 @@ public struct FrameContent {
     public let title: String
     public let backgroundImage: NSImage?
     public let sfSymbol: String?
+    public let sfSymbolTint: Color?
     public let framedScreenshots: [FramedScreenshot]
 
     public struct FramedScreenshot: Identifiable {
@@ -50,12 +51,13 @@ public struct FrameContent {
         }
     }
     
-    public init(locale: Locale, keyword: String, title: String, backgroundImage: NSImage? = nil, sfSymbol: String?, framedScreenshots: [FramedScreenshot]) {
+    public init(locale: Locale, keyword: String, title: String, backgroundImage: NSImage? = nil, sfSymbol: String?, sfSymbolTint: Color? = nil, framedScreenshots: [FramedScreenshot]) {
         self.locale = locale
         self.keyword = keyword
         self.title = title
         self.backgroundImage = backgroundImage
         self.sfSymbol = sfSymbol
+        self.sfSymbolTint = sfSymbolTint
         self.framedScreenshots = framedScreenshots
     }
 }
@@ -104,15 +106,17 @@ public struct FrameScreen {
     public let title: String
     public let backgroundImage: URL?
     public let sfSymbol: String?
+    public let sfSymbolTint: Color?
     public let backgroundColor: Color?
     
-    public init(screenshotMatchingPrefixes: [String], resultFilename: String, keyword: String, title: String, backgroundImage: URL? = nil, sfSymbol: String? = nil, backgroundColor: Color?) {
+    public init(screenshotMatchingPrefixes: [String], resultFilename: String, keyword: String, title: String, backgroundImage: URL? = nil, sfSymbol: String? = nil, sfSymbolTint: Color? = nil, backgroundColor: Color?) {
         self.screenshotMatchingPrefixes = screenshotMatchingPrefixes
         self.resultFilename = resultFilename
         self.keyword = keyword
         self.title = title
         self.backgroundImage = backgroundImage
         self.sfSymbol = sfSymbol
+        self.sfSymbolTint = sfSymbolTint
         self.backgroundColor = backgroundColor
     }
 }
@@ -412,6 +416,7 @@ public struct SFSymbolView: StoreScreenshotView {
                         Image(systemName: sfSymbol)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
+                            .tint(content.sfSymbolTint)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                             .padding(layout.imageInsets)
                     }
