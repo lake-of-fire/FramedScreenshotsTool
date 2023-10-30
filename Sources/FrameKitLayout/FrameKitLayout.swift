@@ -418,7 +418,7 @@ public struct SFSymbolView: StoreScreenshotView {
                             Image(systemName: sfSymbol)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .tint(content.sfSymbolTint)
+                                .foregroundStyle(content.sfSymbolTint ?? layout.textColor)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                                 .padding(layout.imageInsets)
                         }
