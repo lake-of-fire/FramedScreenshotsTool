@@ -413,12 +413,15 @@ public struct SFSymbolView: StoreScreenshotView {
                         .frame(height: 50)
                     
                     if let sfSymbol = content.sfSymbol {
-                        Image(systemName: sfSymbol)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .tint(content.sfSymbolTint)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                            .padding(layout.imageInsets)
+                        Spacer(minLength: 0)
+                        ZStack {
+                            Image(systemName: sfSymbol)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .tint(content.sfSymbolTint)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                                .padding(layout.imageInsets)
+                        }
                     }
                 }
             }
