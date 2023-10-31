@@ -413,11 +413,9 @@ public struct SFSymbolView: StoreScreenshotView {
                     HStack {
                         Spacer(minLength: 0)
                         Image(systemName: sfSymbol)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
                             .foregroundStyle(content.sfSymbolTint ?? layout.textColor)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                             .padding(layout.imageInsets)
+                            .font(.system(size: 800, weight: .bold))
                         Spacer(minLength: 0)
                     }
                 }
@@ -503,9 +501,10 @@ public struct SampleHeroStoreScreenshotView: StoreScreenshotView {
             locale: Locale.current,
             keyword: "Yo",
             title: "",
-            sfSymbol: "star",
+            sfSymbol: "mic",
             sfSymbolTint: .yellow,
             framedScreenshots: []),
         deviceIdiom: .phone // Change this to .pad for iPad preview
     )
+    .frame(width: 900, height: 1800)
 }
