@@ -394,41 +394,37 @@ public struct SFSymbolView: StoreScreenshotView {
     }
     
     public var body: some View {
-        ZStack {
-            // Background Color
-            layout.backgroundColor
-
-            // Background Image
-//            content.backgroundImage.map { backgroundImage in
-//                Image(nsImage: backgroundImage)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//            }
-            ScrollView {
-                VStack(spacing: 0) {
-                    headerView
-                        .frame(minHeight: layout.minTextHeight)
-                    
-                    Spacer()
-                        .frame(height: 50)
-                    
-                    if let sfSymbol = content.sfSymbol {
+        // Background Image
+        //            content.backgroundImage.map { backgroundImage in
+        //                Image(nsImage: backgroundImage)
+        //                    .resizable()
+        //                    .aspectRatio(contentMode: .fit)
+        //            }
+        ScrollView {
+            VStack(alignment: .center, spacing: 0) {
+                headerView
+                    .frame(minHeight: layout.minTextHeight)
+                
+                Spacer()
+                    .frame(height: 50)
+                
+                if let sfSymbol = content.sfSymbol {
+                    Spacer(minLength: 0)
+                    HStack {
                         Spacer(minLength: 0)
-                        HStack {
-                            Spacer(minLength: 0)
-                            Image(systemName: sfSymbol)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(content.sfSymbolTint ?? layout.textColor)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                                .padding(layout.imageInsets)
-                            Spacer(minLength: 0)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        Image(systemName: sfSymbol)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundStyle(content.sfSymbolTint ?? layout.textColor)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                            .padding(layout.imageInsets)
+                        Spacer(minLength: 0)
                     }
                 }
             }
         }
+        .background(layout.backgroundColor)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -499,3 +495,17 @@ public struct SampleHeroStoreScreenshotView: StoreScreenshotView {
 }
  */
 #endif
+
+#Preview {
+    SFSymbolView(
+        layout: FrameLayout.macbookPro13, // You can choose a different layout here
+        content: FrameContent(
+            locale: Locale.current,
+            keyword: "Yo",
+            title: "",
+            sfSymbol: "star",
+            sfSymbolTint: .yellow,
+            framedScreenshots: []),
+        deviceIdiom: .phone // Change this to .pad for iPad preview
+    )
+}
