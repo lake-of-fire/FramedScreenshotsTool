@@ -133,7 +133,7 @@ extension FrameLayout {
 //        size: CGSize(width: 3024, height: 1964),
         size: CGSize(width: 2880, height: 1800),
         deviceFrameOffset: .zero,
-        minTextHeight: 500,
+        minTextHeight: 300,
         textInsets: defaultTextInsets,
         imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
         keywordFontSize: defaultKeywordFontSize,
@@ -199,7 +199,7 @@ extension FrameLayout {
     public static let iPadPro129Inch4thGeneration = Self(
         size: CGSize(width: 2048, height: 2732),
         deviceFrameOffset: CGSize(width: -1, height: 1),
-        minTextHeight: 200,
+        minTextHeight: 250,
         textInsets: defaultTextInsets,
         imageInsets: EdgeInsets(top: 0, leading: 96, bottom: defaultImageBottomInset, trailing: 96),
         keywordFontSize: defaultKeywordFontSize,
@@ -212,7 +212,7 @@ extension FrameLayout {
     public static let iPadPro129Inch2ndGeneration = Self(
         size: CGSize(width: 2048, height: 2732),
         deviceFrameOffset: CGSize(width: -1, height: 1),
-        minTextHeight: 200,
+        minTextHeight: 250,
         textInsets: defaultTextInsets,
         imageInsets: EdgeInsets(top: 0, leading: 96, bottom: defaultImageBottomInset, trailing: 96),
         keywordFontSize: defaultKeywordFontSize,
