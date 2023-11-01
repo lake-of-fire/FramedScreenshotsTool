@@ -133,7 +133,7 @@ extension FrameLayout {
 //        size: CGSize(width: 3024, height: 1964),
         size: CGSize(width: 2880, height: 1800),
         deviceFrameOffset: .zero,
-        minTextHeight: 560,
+        minTextHeight: 500,
         textInsets: defaultTextInsets,
         imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
         keywordFontSize: defaultKeywordFontSize,
@@ -199,7 +199,7 @@ extension FrameLayout {
     public static let iPadPro129Inch4thGeneration = Self(
         size: CGSize(width: 2048, height: 2732),
         deviceFrameOffset: CGSize(width: -1, height: 1),
-        minTextHeight: 400,
+        minTextHeight: 200,
         textInsets: defaultTextInsets,
         imageInsets: EdgeInsets(top: 0, leading: 96, bottom: defaultImageBottomInset, trailing: 96),
         keywordFontSize: defaultKeywordFontSize,
@@ -212,7 +212,7 @@ extension FrameLayout {
     public static let iPadPro129Inch2ndGeneration = Self(
         size: CGSize(width: 2048, height: 2732),
         deviceFrameOffset: CGSize(width: -1, height: 1),
-        minTextHeight: 400,
+        minTextHeight: 200,
         textInsets: defaultTextInsets,
         imageInsets: EdgeInsets(top: 0, leading: 96, bottom: defaultImageBottomInset, trailing: 96),
         keywordFontSize: defaultKeywordFontSize,
@@ -373,7 +373,7 @@ public struct SFSymbolView: StoreScreenshotView {
         self.content = content
         self.deviceIdiom = deviceIdiom
     }
-
+    
     @ViewBuilder var headerView: some View {
         // Text
         HStack(alignment: .top) {
@@ -422,7 +422,7 @@ public struct SFSymbolView: StoreScreenshotView {
                             Image(systemName: sfSymbol)
                                 .foregroundStyle(content.sfSymbolTint ?? layout.textColor)
                                 .padding(layout.imageInsets)
-                                .font(.system(size: 800, weight: .bold))
+                                .font(.system(size: geometry.size.height / 2.3, weight: .bold))
                             Spacer(minLength: 0)
                         }
                     }
@@ -504,16 +504,30 @@ public struct SampleHeroStoreScreenshotView: StoreScreenshotView {
 #endif
 
 #Preview {
-    SFSymbolView(
-        layout: FrameLayout.macbookPro13, // You can choose a different layout here
-        content: FrameContent(
-            locale: Locale.current,
-            keyword: "Yo",
-            title: "",
-            sfSymbol: "mic",
-            sfSymbolTint: .yellow,
-            framedScreenshots: []),
-        deviceIdiom: .phone // Change this to .pad for iPad preview
-    )
-    .frame(width: 900, height: 1800)
+    VStack {
+//        SampleStoreScreenshotView(
+//            layout: FrameLayout.macbookPro13, // You can choose a different layout here
+//            content: FrameContent(
+//                locale: Locale.current,
+//                keyword: "Yo",
+//                title: "",
+//                sfSymbol: nil,
+//                sfSymbolTint: nil,
+//                framedScreenshots: []),
+//            deviceIdiom: .phone // Change this to .pad for iPad preview
+//        )
+//        .frame(width: 1800, height: 1200)
+        SFSymbolView(
+            layout: FrameLayout.macbookPro13, // You can choose a different layout here
+            content: FrameContent(
+                locale: Locale.current,
+                keyword: "Yo",
+                title: "",
+                sfSymbol: "mic",
+                sfSymbolTint: .yellow,
+                framedScreenshots: []),
+            deviceIdiom: .phone // Change this to .pad for iPad preview
+        )
+        .frame(width: 2800, height: 1900)
+    }
 }
