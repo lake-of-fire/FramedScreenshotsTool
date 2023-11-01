@@ -340,9 +340,15 @@ public struct SampleStoreScreenshotView: StoreScreenshotView {
                     // Image
                     ForEach(content.framedScreenshots, id: \.id) { framedScreenshot in
                         HStack(alignment: .bottom) {
-                            Image(nsImage: framedScreenshot.image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
+                            if #available(macOS 14.0, *) {
+                                Image(nsImage: framedScreenshot.image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } else {
+                                Image(nsImage: framedScreenshot.image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            }
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                         .padding(layout.imageInsets)
