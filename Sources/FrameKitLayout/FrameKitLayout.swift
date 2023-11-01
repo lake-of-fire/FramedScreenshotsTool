@@ -133,7 +133,7 @@ extension FrameLayout {
 //        size: CGSize(width: 3024, height: 1964),
         size: CGSize(width: 2880, height: 1800),
         deviceFrameOffset: .zero,
-        minTextHeight: 300,
+        minTextHeight: 200,
         textInsets: defaultTextInsets,
         imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
         keywordFontSize: defaultKeywordFontSize,
