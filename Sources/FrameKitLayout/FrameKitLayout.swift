@@ -171,7 +171,8 @@ extension FrameLayout {
     
     public static let iPhone14ProMax = Self(
 //        size: CGSize(width: 1242, height: 2688),
-        size: CGSize(width: 1284, height: 2778),
+//        size: CGSize(width: 1284, height: 2778),
+        size: CGSize(width: 1290, height: 2796),
         deviceFrameOffset: .zero,
         minTextHeight: 400,
         textInsets: defaultTextInsets,
