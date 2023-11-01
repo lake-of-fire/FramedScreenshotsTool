@@ -400,29 +400,32 @@ public struct SFSymbolView: StoreScreenshotView {
         //                    .resizable()
         //                    .aspectRatio(contentMode: .fit)
         //            }
-        ScrollView {
-            VStack(alignment: .center, spacing: 0) {
-                headerView
-                    .frame(minHeight: layout.minTextHeight)
-                
-                Spacer()
-                    .frame(height: 50)
-                
-                if let sfSymbol = content.sfSymbol {
-                    Spacer(minLength: 0)
-                    HStack {
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(alignment: .center, spacing: 0) {
+                    headerView
+                        .frame(minHeight: layout.minTextHeight)
+                    
+                    Spacer()
+                        .frame(height: 50)
+                    
+                    if let sfSymbol = content.sfSymbol {
                         Spacer(minLength: 0)
-                        Image(systemName: sfSymbol)
-                            .foregroundStyle(content.sfSymbolTint ?? layout.textColor)
-                            .padding(layout.imageInsets)
-                            .font(.system(size: 800, weight: .bold))
-                        Spacer(minLength: 0)
+                        HStack {
+                            Spacer(minLength: 0)
+                            Image(systemName: sfSymbol)
+                                .foregroundStyle(content.sfSymbolTint ?? layout.textColor)
+                                .padding(layout.imageInsets)
+                                .font(.system(size: 800, weight: .bold))
+                            Spacer(minLength: 0)
+                        }
                     }
                 }
+                .frame(minWidth: geometry.size.width, minHeight: geometry.size.height)
             }
+            .background(layout.backgroundColor)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .background(layout.backgroundColor)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
