@@ -301,12 +301,14 @@ public struct SampleStoreScreenshotView: StoreScreenshotView {
             VStack(alignment: .leading, spacing: layout.textGap) {
                 Group {
                     Markdown(content.keyword)
+                        .markdownTheme(.docC)
                         .font(keywordFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)
                     
                     Markdown(content.title)
+                        .markdownTheme(.docC)
                         .font(titleFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
@@ -377,12 +379,14 @@ public struct SFSymbolView: StoreScreenshotView {
             VStack(alignment: .leading, spacing: layout.textGap) {
                 Group {
                     Markdown(content.keyword)
+                        .markdownTheme(.docC)
                         .font(keywordFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)
                     
                     Markdown(content.title)
+                        .markdownTheme(.docC)
                         .font(titleFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
