@@ -2,7 +2,7 @@
 import SwiftUI
 import FrameKit
 import ShotPlan
-import MarkdownUI
+import MarkdownView
 
 public enum FrameLayoutOption: String, RawRepresentable, LayoutProviderOption {
     case macbookPro13 = "Macbook Pro 13"
@@ -300,15 +300,13 @@ public struct SampleStoreScreenshotView: StoreScreenshotView {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: layout.textGap) {
                 Group {
-                    Markdown(content.keyword)
-                        .markdownTheme(.docC)
+                    MarkdownView(text: content.keyword)
                         .font(keywordFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)
                     
-                    Markdown(content.title)
-                        .markdownTheme(.docC)
+                    MarkdownView(text: content.title)
                         .font(titleFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
@@ -378,15 +376,13 @@ public struct SFSymbolView: StoreScreenshotView {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: layout.textGap) {
                 Group {
-                    Markdown(content.keyword)
-                        .markdownTheme(.docC)
+                    MarkdownView(text: content.keyword)
                         .font(keywordFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)
                     
-                    Markdown(content.title)
-                        .markdownTheme(.docC)
+                    MarkdownView(text: content.title)
                         .font(titleFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
