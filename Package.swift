@@ -44,7 +44,7 @@ let package = Package(
         .target(
             name: "FramedScreenshotsCLI",
             dependencies: [
-//                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
 //                .product(name: "ShotPlan", package: "ShotPlan"),
                 "ShotPlan",
 //                .product(name: "shotplan", package: "ShotPlan"),
@@ -54,7 +54,7 @@ let package = Package(
         .executableTarget(
             name: "ShotPlanCLI",
             dependencies: [
-//                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .target(name: "ShotPlan"),
             ]),
         .plugin(
