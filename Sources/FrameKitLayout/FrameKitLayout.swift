@@ -2,7 +2,6 @@
 import SwiftUI
 import FrameKit
 import ShotPlan
-import MarkdownView
 
 public enum FrameLayoutOption: String, RawRepresentable, LayoutProviderOption {
     case macbookPro13 = "Macbook Pro 13"
@@ -136,7 +135,7 @@ extension FrameLayout {
         deviceFrameOffset: .zero,
         minTextHeight: 200,
         textInsets: defaultTextInsets,
-        imageInsets: EdgeInsets(top: 0, leading: 92, bottom: defaultImageBottomInset, trailing: 92),
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
         keywordFontSize: defaultKeywordFontSize,
         titleFontSize: defaultTitleFontSize,
         textGap: defaultTextGap,
@@ -149,7 +148,7 @@ extension FrameLayout {
         deviceFrameOffset: .zero,
         minTextHeight: 400,
         textInsets: defaultTextInsets,
-        imageInsets: EdgeInsets(top: 0, leading: 92, bottom: defaultImageBottomInset, trailing: 92),
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
         keywordFontSize: defaultKeywordFontSize,
         titleFontSize: defaultTitleFontSize,
         textGap: defaultTextGap,
@@ -162,7 +161,7 @@ extension FrameLayout {
         deviceFrameOffset: .zero,
         minTextHeight: 400,
         textInsets: defaultTextInsets,
-        imageInsets: EdgeInsets(top: 0, leading: 92, bottom: defaultImageBottomInset, trailing: 92),
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
         keywordFontSize: defaultKeywordFontSize,
         titleFontSize: defaultTitleFontSize,
         textGap: defaultTextGap,
@@ -177,7 +176,7 @@ extension FrameLayout {
         deviceFrameOffset: .zero,
         minTextHeight: 400,
         textInsets: defaultTextInsets,
-        imageInsets: EdgeInsets(top: 0, leading: 92, bottom: defaultImageBottomInset, trailing: 92),
+        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: defaultImageBottomInset, trailing: 84),
         keywordFontSize: defaultKeywordFontSize,
         titleFontSize: defaultTitleFontSize,
         textGap: defaultTextGap,
@@ -230,7 +229,7 @@ extension FrameLayout {
 //        size: CGSize(width: 1242, height: 2688),
 //        deviceFrameOffset: .zero,
 //        textInsets: EdgeInsets(top: 0, leading: 96, bottom: 240, trailing: 96),
-//        imageInsets: EdgeInsets(top: 0, leading: 92, bottom: 96, trailing: 92),
+//        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: 96, trailing: 84),
 //        keywordFontSize: 108,
 //        titleFontSize: 0,
 //        textGap: 24,
@@ -242,7 +241,7 @@ extension FrameLayout {
 //        size: CGSize(width: 1242, height: 2208),
 //        deviceFrameOffset: .zero,
 //        textInsets: EdgeInsets(top: 0, leading: 96, bottom: 240, trailing: 96),
-//        imageInsets: EdgeInsets(top: 0, leading: 92, bottom: 96, trailing: 92),
+//        imageInsets: EdgeInsets(top: 0, leading: 84, bottom: 96, trailing: 84),
 //        keywordFontSize: 108,
 //        titleFontSize: 0,
 //        textGap: 24,
@@ -300,14 +299,14 @@ public struct SampleStoreScreenshotView: StoreScreenshotView {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: layout.textGap) {
                 Group {
-                    MarkdownView(text: content.keyword)
-                        .font(keywordFont, for: .body)
+                    Text(content.keyword)
+                        .font(keywordFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)
                     
-                    MarkdownView(text: content.title)
-                        .font(titleFont, for: .body)
+                    Text(content.title)
+                        .font(titleFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)
@@ -376,14 +375,14 @@ public struct SFSymbolView: StoreScreenshotView {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: layout.textGap) {
                 Group {
-                    MarkdownView(text: content.keyword)
-                        .font(keywordFont, for: .body)
+                    Text(content.keyword)
+                        .font(keywordFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)
                     
-                    MarkdownView(text: content.title)
-                        .font(titleFont, for: .body)
+                    Text(content.title)
+                        .font(titleFont)
                         .foregroundColor(layout.textColor)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)

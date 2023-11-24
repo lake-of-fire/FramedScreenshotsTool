@@ -15,7 +15,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.2.2")),
-        .package(url: "https://github.com/LiYanan2004/MarkdownView.git", branch: "main"),
     ],
     targets: [
         .target(
@@ -31,7 +30,6 @@ let package = Package(
         .target(
             name: "FrameKitLayout",
             dependencies: [
-                .product(name: "MarkdownView", package: "MarkdownView"),
                 .target(name: "FrameKit"),
             ]
         ),
