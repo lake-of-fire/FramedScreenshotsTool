@@ -42,6 +42,7 @@ public struct DeviceFrameView: View {
                 Image(nsImage: screenshot)
                     .resizable()
                     .frame(width: screenshotSize.width, height: screenshotSize.height)
+                    .clipShape(RoundedRectangle(cornerRadius: 30))
                     .offset(self.offset)
                 Image(nsImage: deviceFrame)
                     .resizable()
