@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FramedScreenshotsCLI"
-               BuildableName = "FramedScreenshotsCLI"
-               BlueprintName = "FramedScreenshotsCLI"
+               BlueprintIdentifier = "ShotPlanCLI"
+               BuildableName = "ShotPlanCLI"
+               BlueprintName = "ShotPlanCLI"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FramedScreenshotsCLI"
-            BuildableName = "FramedScreenshotsCLI"
-            BlueprintName = "FramedScreenshotsCLI"
+            BlueprintIdentifier = "ShotPlanCLI"
+            BuildableName = "ShotPlanCLI"
+            BlueprintName = "ShotPlanCLI"
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -61,9 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FramedScreenshotsCLI"
-            BuildableName = "FramedScreenshotsCLI"
-            BlueprintName = "FramedScreenshotsCLI"
+            BlueprintIdentifier = "ShotPlanCLI"
+            BuildableName = "ShotPlanCLI"
+            BlueprintName = "ShotPlanCLI"
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>
