@@ -1,0 +1,23 @@
+[tools]
+
+[tasks.test]
+description = "Run package unit tests (includes example E2E coverage)."
+run = ["swift test"]
+
+[tasks.example-install]
+description = "Install the demo workspace package and inject sample catalog entries."
+run = [
+  "swift run --package-path . framed-screenshots-tool install-framed-screenshots-tool --workspace Examples/FramedScreenshotsDemo",
+  "swift Examples/FramedScreenshotsDemo/Scripts/apply_demo_catalog.swift --tool-path Examples/FramedScreenshotsDemo/Tools/FramedScreenshots"
+]
+
+[tasks.example-screenshots]
+description = "Render demo screenshots for iPhone, iPad, and macOS."
+depends = ["example-install"]
+run = [
+  "swift run --package-path Examples/FramedScreenshotsDemo/Tools/FramedScreenshots framed-screenshots --workspace Examples/FramedScreenshotsDemo --out Examples/FramedScreenshotsDemo/.build/screenshots --verbose"
+]
+
+[tasks.framed-screenshots]
+description = "Render the demo screenshots (compat alias)."
+depends = ["example-screenshots"]

@@ -8,7 +8,7 @@
 import Foundation
 
 public struct Project {
-    public static let fileManager = FileManager()
+    public static var fileManager: FileManager { FileManager.default }
     
     public static var currentDirectoryURL: URL {
         return URL(fileURLWithPath: fileManager.currentDirectoryPath)

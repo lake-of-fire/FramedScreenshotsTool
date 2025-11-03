@@ -5,7 +5,7 @@ import ShotPlan
 
 @main
 struct ShotPlanCLI: ParsableCommand {
-    static var configuration = CommandConfiguration(
+    static let configuration = CommandConfiguration(
         abstract: "A utility creating automated screenshots with Xcode Test Plans.",
         subcommands: [Init.self, Run.self, Info.self],
         defaultSubcommand: Info.self)
@@ -19,7 +19,7 @@ struct ShotPlanCLI: ParsableCommand {
 
 extension ShotPlanCLI {
     struct Run: ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Starts creating screenshots based on your configuration.")
+        static let configuration = CommandConfiguration(abstract: "Starts creating screenshots based on your configuration.")
              
         mutating func run() {
             let configurationFromFile = try? ShotPlanConfiguration.load()
@@ -80,7 +80,7 @@ extension ShotPlanCLI {
 
 extension ShotPlanCLI {
     struct Init: ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Creates a configuration file.")
+        static let configuration = CommandConfiguration(abstract: "Creates a configuration file.")
         
         @Option(name: .short, help: "Name of your workspace.")
         var workspaceName: String?
@@ -110,7 +110,7 @@ extension ShotPlanCLI {
 
 extension ShotPlanCLI {
     struct Info: ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Shows you how to run this tool.")
+        static let configuration = CommandConfiguration(abstract: "Shows you how to run this tool.")
         
         mutating func run() {
             print("Call 'shotplan run' command to start creating screenshots.")
@@ -120,7 +120,7 @@ extension ShotPlanCLI {
 
 extension ShotPlanCLI {
     struct Debug: ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Debug.")
+        static let configuration = CommandConfiguration(abstract: "Debug.")
         
         mutating func run() {
             

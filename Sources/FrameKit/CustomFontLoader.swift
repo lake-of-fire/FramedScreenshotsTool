@@ -2,13 +2,14 @@
 import Foundation
 import CoreText
 
+@MainActor
 public class CustomFontLoader {
     public struct FontEntry: Hashable {
         let fileURL: URL
         let fontName: String
     }
 
-    public static var shared = CustomFontLoader()
+    public static let shared = CustomFontLoader()
 
     private var registeredFonts: Set<FontEntry> = []
 

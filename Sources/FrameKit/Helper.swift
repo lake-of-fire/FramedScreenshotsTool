@@ -6,6 +6,7 @@ public func absolutePath(_ relativePath: String) -> String {
     URL(fileURLWithPath: NSString(string: relativePath).expandingTildeInPath).path
 }
 
+@MainActor
 func convertToImage(view: NSView, format: NSBitmapImageRep.FileType) -> Data? {
     guard let bitmapRepresentation = view.bitmapImageRepForCachingDisplay(in: view.frame) else {
         return nil

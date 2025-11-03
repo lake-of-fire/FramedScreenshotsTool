@@ -15,6 +15,7 @@ public struct DeviceFrame {
     ///   - deviceName: Name of device with frame contained in module bundle
     ///   - deviceFrameOffset: Offset to adjust the position of app screenshot
     /// - Returns: an image object. `nil` if something went wrong.
+    @MainActor
     public static func makeImage(screenshot: String, deviceName: String, deviceFrameOffset: CGSize) throws -> NSImage? {
         guard let screenshotImage = NSImage(contentsOfFile: absolutePath(screenshot)) else {
             throw Error.fileNotFound("screenshot was not found at \(screenshot)")
@@ -50,11 +51,13 @@ public struct DeviceFrame {
         )
     }
 
+    @MainActor
     public static func makeDeviceFrameImage(screenshot: NSImage, deviceIdiom: Device.Idiom, deviceFrame: NSImage, deviceFrameOffset: CGSize) -> NSImage? {
         let pngData = makeDeviceFrameData(screenshot: screenshot, deviceIdiom: deviceIdiom, deviceFrame: deviceFrame, deviceFrameOffset: deviceFrameOffset)
         return pngData.flatMap { NSImage(data: $0) }
     }
 
+    @MainActor
     public static func makeDeviceFrameData(screenshot: NSImage, deviceIdiom: Device.Idiom, deviceFrame: NSImage, deviceFrameOffset: CGSize) -> Data? {
         var deviceFrame = deviceFrame
         if deviceIdiom == .macbook {
@@ -74,6 +77,7 @@ public struct DeviceFrame {
         return convertToImage(view: view, format: .png)
     }
     
+    @MainActor
     private static func trim(image: NSImage, rect: CGRect) -> NSImage {
         let result = NSImage(size: rect.size)
         result.lockFocus()

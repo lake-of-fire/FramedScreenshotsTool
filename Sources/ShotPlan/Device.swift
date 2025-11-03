@@ -7,7 +7,7 @@
 #if os(macOS)
 import Foundation
 
-public struct Device: Codable, Equatable, Hashable {
+public struct Device: Codable, Equatable, Hashable, Sendable {
     public let simulatorName: String
     public let displaySize: String?
     public let homeStyle: HomeStyle?
@@ -17,7 +17,7 @@ public struct Device: Codable, Equatable, Hashable {
         }
     }
     
-    public enum Idiom: String, CaseIterable, Codable, CustomStringConvertible {
+    public enum Idiom: String, CaseIterable, Codable, CustomStringConvertible, Sendable {
         case macbook
         case tablet
         case phone
@@ -40,7 +40,7 @@ public struct Device: Codable, Equatable, Hashable {
         }
     }
     
-    public enum HomeStyle: String, Codable, CustomStringConvertible {
+    public enum HomeStyle: String, Codable, CustomStringConvertible, Sendable {
         case button
         case indicator
         

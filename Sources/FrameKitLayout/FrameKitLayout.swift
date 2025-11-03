@@ -99,6 +99,8 @@ public struct FrameLayout: LayoutProvider {
     }
 }
 
+extension FrameLayout: @unchecked Sendable {}
+
 public struct FrameScreen {
     public let screenshotMatchingPrefixes: [String]
     public let resultFilename: String

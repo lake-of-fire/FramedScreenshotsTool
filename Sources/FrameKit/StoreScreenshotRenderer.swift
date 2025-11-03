@@ -19,6 +19,7 @@ public struct StoreScreenshotRenderer {
         self.layoutDirection = layoutDirection
     }
 
+    @MainActor
     public func callAsFunction<View: StoreScreenshotView>(_ storeScreenshotView: View) throws {
         let view = NSHostingView(rootView: storeScreenshotView.environment(\.layoutDirection, layoutDirection))
         view.frame = CGRect(

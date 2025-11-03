@@ -1,0 +1,27 @@
+[tools]
+# pin optional tool versions here if desired
+
+[tasks.install-tool]
+description = "Install the workspace-local FramedScreenshots package and inject demo catalog entries."
+run = [
+  "framed-screenshots-tool install-framed-screenshots-tool --workspace .",
+  "swift Scripts/apply_demo_catalog.swift --tool-path Tools/FramedScreenshots",
+  "mkdir -p FrameItExtras && touch FrameItExtras/README.md"
+]
+
+[tasks.generate]
+description = "Generate the Tuist workspace after installing the tool."
+depends = ["install-tool"]
+run = ["tuist generate"]
+
+[tasks.screenshots]
+description = "Render demo screenshots for iPhone, iPad, and macOS."
+depends = ["install-tool"]
+run = [
+  "swift run --package-path Tools/FramedScreenshots framed-screenshots --frame-archive FrameItExtras --out .build/screenshots --verbose"
+]
+
+[tasks.test]
+description = "Run DemoApp unit tests via Tuist (requires generated workspace)."
+depends = ["generate"]
+run = ["tuist test"]
