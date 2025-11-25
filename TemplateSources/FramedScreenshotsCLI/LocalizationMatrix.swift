@@ -127,19 +127,21 @@ struct LocalizationMatrix {
             let directory = destination.appendingPathComponent(locale.identifier, isDirectory: true)
             for entry in entries {
                 let context = ScreenshotContext(localeIdentifier: locale.identifier)
-                var view = await entry.makeView(context: context)
-                view = AnyView(view.environment(\.framedScreenshotsSearchPaths, searchPaths))
                 let fileURL = directory
                     .appendingPathComponent(entry.outputFileName(for: locale.identifier))
                     .appendingPathExtension("png")
-                try await ViewPNGWriter.write(
-                    view: view,
-                    to: fileURL,
-                    colorScheme: entry.colorScheme,
-                    scale: entry.scale,
-                    proposedSize: entry.size,
-                    locale: context.locale
-                )
+                try await MainActor.run {
+                    var view = entry.makeView(context: context)
+                    view = AnyView(view.environment(\.framedScreenshotsSearchPaths, searchPaths))
+                    try ViewPNGWriter.write(
+                        view: view,
+                        to: fileURL,
+                        colorScheme: entry.colorScheme,
+                        scale: entry.scale,
+                        proposedSize: entry.size,
+                        locale: context.locale
+                    )
+                }
             }
         }
     }

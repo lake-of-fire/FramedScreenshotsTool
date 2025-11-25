@@ -7,7 +7,6 @@ import UIKit
 private typealias PlatformFont = UIFont
 #endif
 
-{{MARKER_START}}
 @available(macOS 14.0, *)
 public struct HighlightsText: View {
     public var text: AttributedString
@@ -19,8 +18,7 @@ public struct HighlightsText: View {
     }
 
     public var body: some View {
-        let prepared = style.preparedHighlights(from: text)
-        HighlightLayoutView(prepared: prepared, style: style)
+        HeroText(text, style: .highlights(style))
     }
 }
 
@@ -63,7 +61,7 @@ public enum HighlightStyle: Sendable {
         return sample
     }
 
-    fileprivate func preparedHighlights(from raw: AttributedString) -> PreparedHighlights {
+    func preparedHighlights(from raw: AttributedString) -> PreparedHighlights {
         var working = raw
         if working.characters.isEmpty {
             working = placeholder
@@ -231,7 +229,7 @@ public extension AttributeDynamicLookup {
 }
 
 @available(macOS 14.0, *)
-private struct HighlightLayoutView: View {
+struct HighlightLayoutView: View {
     var prepared: PreparedHighlights
     var style: HighlightStyle
     @State private var textSize: CGSize = .zero
@@ -330,8 +328,12 @@ private struct HighlightCanvasView: View {
     }
 }
 
+@preconcurrency
 private struct HighlightSizePreference: PreferenceKey {
-    static var defaultValue: CGSize = .zero
+    static var defaultValue: CGSize {
+        get { .zero }
+        set { }
+    }
     static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
         let new = nextValue()
         if new != .zero {
@@ -340,7 +342,7 @@ private struct HighlightSizePreference: PreferenceKey {
     }
 }
 
-private struct PreparedHighlights {
+struct PreparedHighlights {
     var text: AttributedString
     var highlights: [HighlightCandidate]
 
@@ -357,14 +359,14 @@ private struct PreparedHighlights {
     }
 }
 
-private struct HighlightCandidate {
+struct HighlightCandidate {
     var nsRange: NSRange
     var range: Range<AttributedString.Index>
     var mark: ResolvedHighlightMark
 }
 
 @available(macOS 14.0, *)
-private struct ResolvedHighlightMark: Hashable {
+struct ResolvedHighlightMark: Hashable {
     var background: HighlightColor
     var foreground: HighlightColor
     var tiltDegrees: Double
@@ -514,4 +516,3 @@ private extension UIFont.Weight {
     }
 }
 #endif
-{{MARKER_END}}

@@ -2,8 +2,7 @@ import ArgumentParser
 import Foundation
 import InstallerCore
 
-@main
-struct FramedScreenshotsTool: ParsableCommand {
+struct FramedScreenshotsToolCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "framed-screenshots-tool",
         abstract: "Utilities for installing and configuring the Framed Screenshots workspace tool.",
@@ -70,7 +69,7 @@ struct FramedScreenshotsTool: ParsableCommand {
             )
             print(report.description)
         }
-    }
+}
 
     struct EnableAppStoreConnect: ParsableCommand {
         static let configuration = CommandConfiguration(
@@ -288,5 +287,12 @@ struct FramedScreenshotsTool: ParsableCommand {
             )
             print("FrameIt assets available at \(location.path)")
         }
+    }
+}
+
+@main
+struct FramedScreenshotsTool {
+    static func main() {
+        FramedScreenshotsToolCommand.main()
     }
 }

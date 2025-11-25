@@ -1,0 +1,19 @@
+{{MARKER_START}}
+@_exported import FramedScreenshotsCoreKit
+
+public typealias ScreenshotAsset = FramedScreenshotsCoreKit.ScreenshotAsset
+public typealias ScreenshotRegistry = FramedScreenshotsCoreKit.ScreenshotRegistry
+public typealias ScreenshotContext = FramedScreenshotsCoreKit.ScreenshotContext
+public typealias ScreenshotEntry = FramedScreenshotsCoreKit.ScreenshotEntry
+public typealias ScreenshotLibrary = FramedScreenshotsCoreKit.ScreenshotLibrary
+public typealias ViewPNGWriter = FramedScreenshotsCoreKit.ViewPNGWriter
+public typealias HighlightsText = FramedScreenshotsCoreKit.HighlightsText
+public typealias HighlightStyle = FramedScreenshotsCoreKit.HighlightStyle
+public typealias HighlightMark = FramedScreenshotsCoreKit.HighlightMark
+public typealias HighlightColor = FramedScreenshotsCoreKit.HighlightColor
+public typealias HeroText = FramedScreenshotsCoreKit.HeroText
+public typealias HeroTextStyle = FramedScreenshotsCoreKit.HeroTextStyle
+public typealias MarketingBadge = FramedScreenshotsCoreKit.MarketingBadge
+public typealias FocusedScreenshotOverlay = FramedScreenshotsCoreKit.FocusedScreenshotOverlay
+
+{{MARKER_END}}

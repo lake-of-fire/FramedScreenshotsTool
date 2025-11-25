@@ -2,7 +2,6 @@ import AppKit
 import Foundation
 import SwiftUI
 
-{{MARKER_START}}
 public struct ScreenshotAsset: Sendable {
     public let name: String
     public let url: URL?
@@ -159,4 +158,3 @@ public extension EnvironmentValues {
         set { self[FramedScreenshotsSearchPathsKey.self] = newValue }
     }
 }
-{{MARKER_END}}

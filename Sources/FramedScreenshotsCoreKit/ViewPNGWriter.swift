@@ -2,7 +2,6 @@ import AppKit
 import Foundation
 import SwiftUI
 
-{{MARKER_START}}
 public enum ViewPNGWriter {
     public enum WriterError: Error, CustomStringConvertible {
         case failedToProduceImage
@@ -59,4 +58,3 @@ private extension NSImage {
         try pngData.write(to: url, options: .atomic)
     }
 }
-{{MARKER_END}}

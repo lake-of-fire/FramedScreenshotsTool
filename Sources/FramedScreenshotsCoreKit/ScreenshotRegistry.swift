@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-{{MARKER_START}}
 public struct ScreenshotContext: Sendable {
     public let localeIdentifier: String
     public let locale: Locale
@@ -184,4 +183,3 @@ struct GlobPattern {
         return regex.firstMatch(in: candidate, options: [], range: range) != nil
     }
 }
-{{MARKER_END}}

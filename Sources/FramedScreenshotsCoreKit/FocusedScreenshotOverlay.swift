@@ -2,7 +2,6 @@ import AppKit
 import Foundation
 import SwiftUI
 
-{{MARKER_START}}
 public struct FocusedScreenshotOverlay: View {
     public struct Configuration {
         public var screenshotName: String
@@ -156,6 +155,7 @@ public struct FocusedScreenshotOverlay: View {
     }
 }
 
+@MainActor
 private final class FocusedScreenshotOverlayModel: ObservableObject {
     @Published var asset: ScreenshotAsset?
     @Published var focusResult: FocusExtractionResult?
@@ -185,17 +185,13 @@ private final class FocusedScreenshotOverlayModel: ObservableObject {
             localizationIdentifier: configuration.localizationIdentifier,
             searchPaths: searchPaths
         )
-        await MainActor.run {
-            self.asset = asset
-        }
+        self.asset = asset
         guard !asset.isPlaceholder else { return }
         let result = focusExtractor.extract(
             configuration: configurationContext,
             image: asset.image
         )
-        await MainActor.run {
-            self.focusResult = result
-        }
+        self.focusResult = result
     }
 }
 
@@ -522,4 +518,6 @@ private enum PlaceholderFactory {
         return image
     }
 }
-{{MARKER_END}}
+
+extension FocusedScreenshotOverlay.FocusShadow: @unchecked Sendable {}
+extension FocusedScreenshotOverlay.FocusBorderStyle: @unchecked Sendable {}

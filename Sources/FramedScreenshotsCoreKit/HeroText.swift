@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-{{MARKER_START}}
 public struct HeroText: View {
     public var text: AttributedString
     public var style: HeroTextStyle
@@ -11,30 +10,37 @@ public struct HeroText: View {
         self.style = style
     }
 
+    @ViewBuilder
     public var body: some View {
-        let prepared = style.prepare(text: text)
-
-        return ZStack {
-            HeroStrokeView(prepared: prepared, style: style)
-            HeroFillView(prepared: prepared, style: style)
+        switch style {
+        case .highlights(let highlightStyle):
+            let preparedHighlights = highlightStyle.preparedHighlights(from: text)
+            HighlightLayoutView(prepared: preparedHighlights, style: highlightStyle)
+        default:
+            let prepared = style.prepare(text: text)
+            ZStack {
+                HeroStrokeView(prepared: prepared, style: style)
+                HeroFillView(prepared: prepared, style: style)
+            }
+            .padding(style.contentPadding)
+            .background(
+                RoundedRectangle(cornerRadius: style.cornerRadius, style: .continuous)
+                    .fill(style.backgroundStyle)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: style.cornerRadius, style: .continuous)
+                            .stroke(style.borderStyle, lineWidth: 1.5)
+                            .opacity(style.borderOpacity)
+                    )
+            )
+            .accessibilityLabel(Text(prepared.accessibilityLabel))
         }
-        .padding(style.contentPadding)
-        .background(
-            RoundedRectangle(cornerRadius: style.cornerRadius, style: .continuous)
-                .fill(style.backgroundStyle)
-                .overlay(
-                    RoundedRectangle(cornerRadius: style.cornerRadius, style: .continuous)
-                        .stroke(style.borderStyle, lineWidth: 1.5)
-                        .opacity(style.borderOpacity)
-                )
-        )
-        .accessibilityLabel(Text(prepared.accessibilityLabel))
     }
 }
 
 public enum HeroTextStyle: Sendable, Equatable {
     case exciting(fill: FillMode = .solid)
     case wavy(fill: FillMode = .gradient)
+    case highlights(_ style: HighlightStyle = .accented)
 
     public enum FillMode: Sendable, Equatable {
         case solid
@@ -45,6 +51,8 @@ public enum HeroTextStyle: Sendable, Equatable {
         switch self {
         case .exciting(let fill), .wavy(let fill):
             return fill
+        case .highlights:
+            return .solid
         }
     }
 
@@ -54,6 +62,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return .system(size: 72, weight: .heavy, design: .rounded)
         case .wavy:
             return .system(size: 64, weight: .heavy, design: .rounded)
+        case .highlights:
+            return .system(size: 32, weight: .semibold, design: .rounded)
         }
     }
 
@@ -63,6 +73,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return 0.8
         case .wavy:
             return 1.4
+        case .highlights:
+            return 0
         }
     }
 
@@ -72,6 +84,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return 40
         case .wavy:
             return 44
+        case .highlights:
+            return 0
         }
     }
 
@@ -81,6 +95,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return EdgeInsets(top: 36, leading: 56, bottom: 42, trailing: 56)
         case .wavy:
             return EdgeInsets(top: 42, leading: 48, bottom: 48, trailing: 48)
+        case .highlights:
+            return EdgeInsets()
         }
     }
 
@@ -100,32 +116,51 @@ public enum HeroTextStyle: Sendable, Equatable {
             case .gradient:
                 return AnyShapeStyle(Self.primaryFillGradient)
             }
+        case .highlights:
+            return AnyShapeStyle(Color.white)
         }
     }
 
     var backgroundStyle: AnyShapeStyle {
-        AnyShapeStyle(LinearGradient(
-            colors: [
-                Color(red: 0.13, green: 0.11, blue: 0.24),
-                Color(red: 0.16, green: 0.13, blue: 0.31)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        ))
+        switch self {
+        case .highlights:
+            return AnyShapeStyle(Color.clear)
+        default:
+            return AnyShapeStyle(LinearGradient(
+                colors: [
+                    Color(red: 0.13, green: 0.11, blue: 0.24),
+                    Color(red: 0.16, green: 0.13, blue: 0.31)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ))
+        }
     }
 
     var borderStyle: AnyShapeStyle {
-        AnyShapeStyle(LinearGradient(
-            colors: [
-                Color.white.opacity(0.45),
-                Color.white.opacity(0.1)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        ))
+        switch self {
+        case .highlights:
+            return AnyShapeStyle(Color.clear)
+        default:
+            return AnyShapeStyle(LinearGradient(
+                colors: [
+                    Color.white.opacity(0.45),
+                    Color.white.opacity(0.1)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ))
+        }
     }
 
-    var borderOpacity: Double { 0.45 }
+    var borderOpacity: Double {
+        switch self {
+        case .highlights:
+            return 0
+        default:
+            return 0.45
+        }
+    }
 
     var strokeColor: Color {
         switch self {
@@ -133,6 +168,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return Color.black
         case .wavy:
             return Color.white.opacity(0.9)
+        case .highlights:
+            return .clear
         }
     }
 
@@ -142,6 +179,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return 10
         case .wavy:
             return 6
+        case .highlights:
+            return 0
         }
     }
 
@@ -151,6 +190,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return 1.0
         case .wavy:
             return 0.88
+        case .highlights:
+            return 0
         }
     }
 
@@ -160,6 +201,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return .pi / 9 // 20°
         case .wavy:
             return .pi / 12
+        case .highlights:
+            return 0
         }
     }
 
@@ -169,6 +212,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return 0
         case .wavy:
             return 0.24
+        case .highlights:
+            return 0
         }
     }
 
@@ -178,6 +223,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return 0
         case .wavy:
             return 16
+        case .highlights:
+            return 0
         }
     }
 
@@ -187,6 +234,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return 0
         case .wavy:
             return 1.05
+        case .highlights:
+            return 0
         }
     }
 
@@ -196,6 +245,8 @@ public enum HeroTextStyle: Sendable, Equatable {
             return 0
         case .wavy:
             return 18
+        case .highlights:
+            return 0
         }
     }
 
@@ -209,6 +260,8 @@ public enum HeroTextStyle: Sendable, Equatable {
                 radius: 26,
                 offset: CGSize(width: 0, height: 18)
             )
+        case .highlights:
+            return nil
         }
     }
 
@@ -267,6 +320,13 @@ struct HeroPreparedText {
     var accessibilityLabel: String
 }
 
+public extension HeroText {
+    func heroTextStyle(_ style: HeroTextStyle = .exciting()) -> HeroText {
+        var copy = self
+        copy.style = style
+        return copy
+    }
+}
 private struct HeroFillView: View {
     var prepared: HeroPreparedText
     var style: HeroTextStyle
@@ -437,4 +497,3 @@ struct HeroText_Previews: PreviewProvider {
     }
 }
 #endif
-{{MARKER_END}}

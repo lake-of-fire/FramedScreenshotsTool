@@ -5,7 +5,7 @@ import ImageIO
 
 {{MARKER_START}}
 struct FramedScreenshotsCommand: AsyncParsableCommand {
-    static var configuration = CommandConfiguration(
+    static let configuration = CommandConfiguration(
         commandName: "framed-screenshots",
         abstract: "List, render, and upload App Store screenshots using FramedScreenshotsKit."
     )

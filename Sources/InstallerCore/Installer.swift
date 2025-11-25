@@ -217,9 +217,14 @@ public final class FramedScreenshotsInstaller {
 
         let timestamp = Self.backupTimestampFormatter.string(from: Date())
 
+        let toolPackageRoot = TemplateSourceLocator.packageRoot
+        let dependencyPath = toolPackageRoot.relativePath(from: toolLocation.packageURL) ?? toolPackageRoot.path
+        let dependencyLiteral = Self.swiftStringLiteral(forPath: dependencyPath)
+
         let filePlans = templatePlans(
             toolLocation: toolLocation,
             miseTask: miseTaskResolution,
+            toolDependencyLiteral: dependencyLiteral,
             options: options
         )
 
@@ -234,6 +239,12 @@ public final class FramedScreenshotsInstaller {
 // MARK: - Private helpers
 
 private extension FramedScreenshotsInstaller {
+    static func swiftStringLiteral(forPath path: String) -> String {
+        let escapedBackslashes = path.replacingOccurrences(of: "\\", with: "\\\\")
+        let escapedQuotes = escapedBackslashes.replacingOccurrences(of: "\"", with: "\\\"")
+        return "\"\(escapedQuotes)\""
+    }
+
     struct ToolLocation {
         var requestedPath: String
         var packageURL: URL
@@ -438,6 +449,7 @@ private extension FramedScreenshotsInstaller {
     func templatePlans(
         toolLocation: ToolLocation,
         miseTask: MiseTaskLocation?,
+        toolDependencyLiteral: String,
         options: InstallerOptions
     ) -> [FilePlan] {
         var plans: [FilePlan] = []
@@ -445,7 +457,7 @@ private extension FramedScreenshotsInstaller {
         plans.append(
             FilePlan(
                 url: toolLocation.packageURL.appendingPathComponent("Package.swift"),
-                contents: TemplateFactory.packageSwiftContents(),
+                contents: TemplateFactory.packageSwiftContents(toolPackagePath: toolDependencyLiteral),
                 mode: .managed,
                 makeExecutable: false,
                 description: "Package.swift"
@@ -494,91 +506,11 @@ private extension FramedScreenshotsInstaller {
 
         plans.append(
             FilePlan(
-                url: toolLocation.kitSourcesURL.appendingPathComponent("ScreenshotRegistry.swift"),
-                contents: TemplateFactory.screenshotRegistryContents(),
+                url: toolLocation.kitSourcesURL.appendingPathComponent("FramedScreenshotsKit+Exports.swift"),
+                contents: TemplateFactory.kitBridgeContents(),
                 mode: .managed,
                 makeExecutable: false,
-                description: "ScreenshotRegistry.swift"
-            )
-        )
-
-        plans.append(
-            FilePlan(
-                url: toolLocation.kitSourcesURL.appendingPathComponent("ScreenshotLibrary.swift"),
-                contents: TemplateFactory.screenshotLibraryContents(),
-                mode: .managed,
-                makeExecutable: false,
-                description: "ScreenshotLibrary.swift"
-            )
-        )
-
-        plans.append(
-            FilePlan(
-                url: toolLocation.kitSourcesURL.appendingPathComponent("FocusedScreenshotOverlay.swift"),
-                contents: TemplateFactory.focusedOverlayContents(),
-                mode: .managed,
-                makeExecutable: false,
-                description: "FocusedScreenshotOverlay.swift"
-            )
-        )
-
-        plans.append(
-            FilePlan(
-                url: toolLocation.kitSourcesURL.appendingPathComponent("HeroText.swift"),
-                contents: TemplateFactory.heroTextContents(),
-                mode: .managed,
-                makeExecutable: false,
-                description: "HeroText.swift"
-            )
-        )
-
-        plans.append(
-            FilePlan(
-                url: toolLocation.kitSourcesURL.appendingPathComponent("MarketingBadge.swift"),
-                contents: TemplateFactory.marketingBadgeContents(),
-                mode: .managed,
-                makeExecutable: false,
-                description: "MarketingBadge.swift"
-            )
-        )
-
-        plans.append(
-            FilePlan(
-                url: toolLocation.kitMarketingResourcesURL.appendingPathComponent("LaurelBranchLeft.svg"),
-                contents: TemplateFactory.laurelBranchSVGContents(),
-                mode: .managed,
-                makeExecutable: false,
-                description: "Marketing Laurel SVG"
-            )
-        )
-
-        plans.append(
-            FilePlan(
-                url: toolLocation.kitSourcesURL.appendingPathComponent("HighlightsText.swift"),
-                contents: TemplateFactory.highlightsTextContents(),
-                mode: .managed,
-                makeExecutable: false,
-                description: "HighlightsText.swift"
-            )
-        )
-
-        plans.append(
-            FilePlan(
-                url: toolLocation.kitSourcesURL.appendingPathComponent("DesignPreviews.swift"),
-                contents: TemplateFactory.designPreviewsContents(),
-                mode: .managed,
-                makeExecutable: false,
-                description: "DesignPreviews.swift"
-            )
-        )
-
-        plans.append(
-            FilePlan(
-                url: toolLocation.kitSourcesURL.appendingPathComponent("ViewPNGWriter.swift"),
-                contents: TemplateFactory.viewPNGWriterContents(),
-                mode: .managed,
-                makeExecutable: false,
-                description: "ViewPNGWriter.swift"
+                description: "FramedScreenshotsKit exports"
             )
         )
 
@@ -740,7 +672,7 @@ enum TemplateFactory {
     static let markerStart = "// BEGIN GENERATED BY FramedScreenshotsTool"
     static let markerEnd = "// END GENERATED BY FramedScreenshotsTool"
 
-    static func packageSwiftContents() -> String {
+    static func packageSwiftContents(toolPackagePath: String) -> String {
         """
 // swift-tools-version: 6.2
 \(markerStart)
@@ -762,13 +694,16 @@ let package = Package(
         )
     ],
     dependencies: [
+        .package(path: \(toolPackagePath)),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.2"),
         .package(url: "https://github.com/AvdLee/appstoreconnect-swift-sdk.git", from: "2.3.0")
     ],
     targets: [
         .target(
             name: "FramedScreenshotsKit",
-            dependencies: [],
+            dependencies: [
+                .product(name: "FramedScreenshotsCoreKit", package: "FramedScreenshotsTool")
+            ],
             resources: [
                 .process("Resources")
             ]
@@ -795,6 +730,10 @@ let package = Package(
         replaceMarkers(in: loadTemplate("FramedScreenshotsCLI/main.swift"))
     }
 
+    static func kitBridgeContents() -> String {
+        replaceMarkers(in: loadTemplate("FramedScreenshotsKit/KitBridge.swift"))
+    }
+
     static func localizationMatrixContents() -> String {
         replaceMarkers(in: loadTemplate("FramedScreenshotsCLI/LocalizationMatrix.swift"))
     }
@@ -805,42 +744,6 @@ let package = Package(
 
     static func appStoreConnectUploaderContents() -> String {
         replaceMarkers(in: loadTemplate("FramedScreenshotsCLI/AppStoreConnectUploader.swift"))
-    }
-
-    static func screenshotRegistryContents() -> String {
-        replaceMarkers(in: loadTemplate("FramedScreenshotsKit/ScreenshotRegistry.swift"))
-    }
-
-    static func screenshotLibraryContents() -> String {
-        replaceMarkers(in: loadTemplate("FramedScreenshotsKit/ScreenshotLibrary.swift"))
-    }
-
-    static func focusedOverlayContents() -> String {
-        replaceMarkers(in: loadTemplate("FramedScreenshotsKit/FocusedScreenshotOverlay.swift"))
-    }
-
-    static func heroTextContents() -> String {
-        replaceMarkers(in: loadTemplate("FramedScreenshotsKit/HeroText.swift"))
-    }
-
-    static func marketingBadgeContents() -> String {
-        replaceMarkers(in: loadTemplate("FramedScreenshotsKit/MarketingBadge.swift"))
-    }
-
-    static func laurelBranchSVGContents() -> String {
-        loadTemplate("FramedScreenshotsKit/Resources/Marketing/LaurelBranchLeft.svg")
-    }
-
-    static func highlightsTextContents() -> String {
-        replaceMarkers(in: loadTemplate("FramedScreenshotsKit/HighlightsText.swift"))
-    }
-
-    static func designPreviewsContents() -> String {
-        replaceMarkers(in: loadTemplate("FramedScreenshotsKit/DesignPreviews.swift"))
-    }
-
-    static func viewPNGWriterContents() -> String {
-        replaceMarkers(in: loadTemplate("FramedScreenshotsKit/ViewPNGWriter.swift"))
     }
 
     static func generatedCatalogContents() -> String {
@@ -912,6 +815,10 @@ private enum TemplateSourceLocator {
         url.deleteLastPathComponent() // -> package root
         return url.appendingPathComponent("TemplateSources", isDirectory: true)
     }()
+
+    static var packageRoot: URL {
+        root.deletingLastPathComponent()
+    }
 }
 
 // MARK: - FileManager utilities

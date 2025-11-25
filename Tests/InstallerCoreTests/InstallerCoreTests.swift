@@ -29,6 +29,10 @@ final class InstallerCoreTests: XCTestCase {
         let packageContents = try String(contentsOf: packageURL)
         XCTAssertTrue(packageContents.contains(TemplateFactory.markerStart))
         XCTAssertTrue(packageContents.contains(TemplateFactory.markerEnd))
+        XCTAssertFalse(
+            packageContents.contains(".package(path: \"/"),
+            "Package.swift should not embed absolute dependency paths"
+        )
     }
 
     func testCreateOnceFileRespectsForce() throws {

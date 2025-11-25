@@ -1,6 +1,5 @@
 import SwiftUI
 
-{{MARKER_START}}
 @available(macOS 14.0, *)
 struct FramedScreenshotsDesignPreviews: PreviewProvider {
     static var previews: some View {
@@ -66,4 +65,3 @@ struct FramedScreenshotsDesignPreviews: PreviewProvider {
         return attributed
     }
 }
-{{MARKER_END}}

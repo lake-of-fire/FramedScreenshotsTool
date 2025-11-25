@@ -9,3 +9,4 @@ DerivedData/
 .netrc
 Examples/FramedScreenshotsDemo/Screenshots/
 !Examples/FramedScreenshotsDemo/Screenshots/README.md
+Examples/FramedScreenshotsDemo/.mise/

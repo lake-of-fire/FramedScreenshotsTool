@@ -7,7 +7,7 @@ run = ["swift test"]
 [tasks.example-install]
 description = "Install the demo workspace package and inject sample catalog entries."
 run = [
-  "swift run --package-path . framed-screenshots-tool install-framed-screenshots-tool --workspace Examples/FramedScreenshotsDemo",
+  "swift run --package-path . framed-screenshots-tool install-framed-screenshots-tool --workspace Examples/FramedScreenshotsDemo --task-dir .mise/tasks",
   "swift Examples/FramedScreenshotsDemo/Scripts/apply_demo_catalog.swift --tool-path Examples/FramedScreenshotsDemo/Tools/FramedScreenshots"
 ]
 

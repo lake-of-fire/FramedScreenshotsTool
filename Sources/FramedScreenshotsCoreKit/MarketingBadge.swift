@@ -4,7 +4,6 @@ import SwiftUI
 import AppKit
 #endif
 
-{{MARKER_START}}
 public struct MarketingBadge: View {
     public struct Content: Sendable {
         public var headerSubtitle: String?
@@ -66,7 +65,6 @@ public struct MarketingBadge: View {
         .padding(.vertical, 18)
     }
 }
-{{MARKER_END}}
 
 private struct LaurelDecoration: View {
     enum Direction { case leading, trailing }
