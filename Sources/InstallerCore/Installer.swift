@@ -681,7 +681,7 @@ import PackageDescription
 let package = Package(
     name: "FramedScreenshots",
     platforms: [
-        .macOS(.v26)
+        .macOS(.v15)
     ],
     products: [
         .library(

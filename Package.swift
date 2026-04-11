@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "FramedScreenshotsTool",
-    platforms: [.macOS(.v26)],
+    platforms: [.macOS(.v15)],
     products: [
         .library(name: "FrameKit", targets: ["FrameKit"]),
         .library(name: "FrameKitLayout", targets: ["FrameKitLayout"]),
