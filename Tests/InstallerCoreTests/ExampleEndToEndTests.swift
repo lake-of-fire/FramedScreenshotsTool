@@ -31,9 +31,11 @@ final class ExampleEndToEndTests: XCTestCase {
             throw XCTSkip("Example workspace not found at \(exampleSource.path)")
         }
 
-        let tempRoot = fileManager.temporaryDirectory
+        let tempRoot = root
+            .appendingPathComponent(".build/e2e-temp", isDirectory: true)
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try fileManager.createDirectory(at: tempRoot, withIntermediateDirectories: true)
+        defer { try? fileManager.removeItem(at: tempRoot) }
 
         let exampleWorkspace = tempRoot.appendingPathComponent("FramedScreenshotsDemo-\(name)", isDirectory: true)
         try fileManager.copyItem(at: exampleSource, to: exampleWorkspace)
